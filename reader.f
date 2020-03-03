@@ -1,8 +1,13 @@
-      program readfile
-      implicit none
-      write(*,*) 'Hello World!'
-      end program
+C     program readfile
+C     implicit none
+C     write(*,*) 'Hello World!'
+C     end program
 
+C++   This is a library built to read external medium profiles ++
+C++   for JEWEL                                                ++
+
+C++   This is the main subroutine that performs the reading    ++
+C++                                                            ++
       subroutine reader(filename,np,nt,tprofile)
       implicit none
       integer i,np,nt
@@ -18,6 +23,8 @@
       end do
       end subroutine
 
+C++   This routine reads the header lines and ignores them     ++
+C++                                                            ++
       subroutine readheader
       implicit none
       integer i
@@ -27,6 +34,8 @@
       end do
       end subroutine
 
+C++   This is the main subroutine that performs the reading    ++
+C++   a single timestep                                        ++
       subroutine readtimestep(signal,k,np,tprofile)
       implicit none
       integer i,j,k,np
@@ -42,6 +51,8 @@
       call inserttimestep(k,np,tgrid,tprofile)
       end subroutine
 
+C++   This is the main subroutine that inserts the timestep    ++
+C++   into the tprofile                                        ++
       subroutine inserttimestep(k,np,tgrid,tprofile)
       implicit none
       integer i,j,k,np

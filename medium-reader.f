@@ -66,7 +66,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDFILEC/MEDFILE,FILELIST,NLIST,endoff
       CHARACTER*200 MEDFILE,FILELIST
@@ -266,7 +266,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
@@ -316,7 +316,7 @@ C--pick an impact parameter
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       getcentrality=centr
       end
@@ -332,7 +332,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
 C--internal medium parametersa
       COMMON/TEMPMAX/TEMPMAXIMUM
@@ -417,7 +417,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
 	DOUBLE PRECISION BVAL
 	BREAL=BVAL
@@ -433,7 +433,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
 C--internal medium parameters
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
@@ -585,7 +585,7 @@ C--factor to vary Debye mass
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
@@ -613,7 +613,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
@@ -696,7 +696,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
@@ -733,7 +733,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
@@ -767,7 +767,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
@@ -801,7 +801,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
@@ -831,7 +831,7 @@ C--function call
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
@@ -876,7 +876,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
@@ -922,7 +922,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
@@ -968,7 +968,7 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
@@ -1028,7 +1028,7 @@ C--local variables
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       CHARACTER*32000 BUFFER,LABEL*5
       CHARACTER DUMMIE,CONTENT*100
@@ -1247,7 +1247,7 @@ C      ELSE IF(LABEL.NE."0.0") THEN
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       DOUBLE PRECISION X4,Y4,Z4,T4
       DOUBLE PRECISION STEP
@@ -1266,7 +1266,7 @@ C      ELSE IF(LABEL.NE."0.0") THEN
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
+      common/grid/tprofile(101,101,60)
       double precision tprofile
       double precision tempx(2,2),tempy(2,2),tempxy(2,2)
       double precision p(4,4),a(4,4),au(4,4),ptemp
