@@ -1,0 +1,30 @@
+      SUBROUTINE MEDINIT(FILE,id,etam,mass)
+Inicializa o meio
+
+      SUBROUTINE MEDNEXTEVT
+Gera o meio para o próximo evento
+
+      SUBROUTINE PICKVTX(X,Y)
+Escolhe o vértice inicial do par de pártons
+
+	SUBROUTINE SETB(BVAL)
+Ajusta o parâmetro de impacto
+
+      SUBROUTINE GETSCATTERER(X,Y,Z,T,TYPE,PX,PY,PZ,E,MS)
+Gera a identidade e o quadrimomento do centro espalhador
+
+      SUBROUTINE AVSCATCEN(X,Y,Z,T,PX,PY,PZ,E,m)
+Calcula o quadrimomento do centro espalhador
+
+      SUBROUTINE maxscatcen(PX,PY,PZ,E,m)
+Calcula o quadrimomento máximo para o centro espalhador
+
+      SUBROUTINE CALCTA()
+Calcula a thickness function
+
+      SUBROUTINE CALCXSECTION()
+Calcula a seção de choque nuclear para a escolha do parâmetro
+de impacto
+
+      SUBROUTINE MYMED()
+Meu programa, realiza a leitura do meio externo

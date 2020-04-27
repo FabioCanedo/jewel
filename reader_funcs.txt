@@ -1,0 +1,58 @@
+      DOUBLE PRECISION FUNCTION GETMD(X1,Y1,Z1,T1)
+Calcula a massa de Debye a partir da temperatura local
+
+      DOUBLE PRECISION FUNCTION GETMS(X2,Y2,Z2,T2)
+Calcula a massa do centro de espalhamento
+
+      DOUBLE PRECISION FUNCTION GETNEFF(X3,Y3,Z3,T3)
+Calcula a densidade de centros de espalhamento
+
+      DOUBLE PRECISION FUNCTION GETTEMP(X4,Y4,Z4,T4)
+Retorna a temperatura local
+
+      DOUBLE PRECISION FUNCTION GETTEMPMAX()
+Retorna o máximo de temperatura atingido no evento
+
+      DOUBLE PRECISION FUNCTION GETMDMAX()
+Retorna o máximo da massa de Debye atingida no evento
+
+      DOUBLE PRECISION FUNCTION GETMDMIN()
+Retorna o mínimo da massa de Debye, necessária para a 
+regularização da seção de choque
+
+      DOUBLE PRECISION FUNCTION GETMSMAX()
+Retorna a massa máxima do centro de espalhamento
+
+	DOUBLE PRECISION FUNCTION GETNATMDMIN()
+Retorna a densidade de centros espalhadores onde a massa
+de Debye é mínima
+
+	DOUBLE PRECISION FUNCTION GETLTIMEMAX()
+Retorna o tempo de vida do evento, ou seja, quando em nenhuma
+posição a temperatura está acima de Tc
+
+      DOUBLE PRECISION FUNCTION GETNEFFMAX()
+Retorna a densidade máxima de centros espalhadores
+
+      DOUBLE PRECISION FUNCTION NPART(XX1,YY1,XX2,YY2)
+Retorna o número de núcleons participantes na posição indicada
+
+      DOUBLE PRECISION FUNCTION NTHICK(X1,Y1)
+Retorna a função espessura
+
+      DOUBLE PRECISION FUNCTION MEDPART(X4,Y4,Z4,T4)
+Retorna a densidade de centros espalhadores na minha versão, com
+meio externo
+
+      DOUBLE PRECISION FUNCTION INTERPOLATE(X4,Y4,T4
+     &,STEP)
+Função de interpolação para o cálculo da temperatura e pontos
+arbitrários, ou seja, que não sejam vértices do grid
+
+      DOUBLE PRECISION FUNCTION MEDDERIV(XVAL,W)
+Não lembro exatamente o que essa função faz, mas parece ser o
+potencial de woods-saxon
+
+      DOUBLE PRECISION FUNCTION INTEGRATE(TPROF)
+Função que integra o meio, não lembro também qual é o propósito
+dessa função
