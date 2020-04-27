@@ -1,0 +1,94 @@
+290:	subroutine init()
+Prepara a inicialização para rodar o jewel, prepara o pythia e declara
+todas as variáveis globais, assim como ajusta o meio e, no caso da
+minha versão, realiza a leitura do perfil de temperatura a ser utilizado.
+
+783:	subroutine initpythia(beam1,beam2)
+Inicializa o pythia de acordo com as partículas a serem colididas,
+essas são especificadas pelas variáveis beam1 e beam2
+
+983:	subroutine genevent(j,b1,b2)
+Gera j eventos com projéteis b1 e b2
+
+1520:	SUBROUTINE MAKESTRINGS(WHICH)
+Monta as strings para a hadronização
+
+1539:      SUBROUTINE MAKESTRINGS_VAC
+Monta as strings para a hadronização no vácuo
+
+1769:      SUBROUTINE MAKESTRINGS_MINL
+Monta as strings por outro método não conhecido
+
+2008:	SUBROUTINE CLEANUP(NFIRST)
+Limpeza dos arrays imensos do pythia, é necessário lidar com a
+memória de maneira bem manual, coisas de fortran, eu acho
+
+2033:	SUBROUTINE MAKECASCADE
+Realiza a cascata das partículas
+
+2076:      SUBROUTINE MAKEBRANCH(L)
+Realiza o branch do projétil
+
+2360:	SUBROUTINE MAKESPLITTING(L)
+Realiza o splitting de radiação do projétil
+
+2638:	SUBROUTINE MAKEINSPLIT(L,X,TSUM,VIRT,TYPI,TIME,TAURAD)
+Não sei do que se trata
+
+2892:	SUBROUTINE DOINSTATESCAT(L,X,TYPI,Q,TSTART,DELTAT,OVERQ0,
+Realiza a radiação de estado inicial para a colisão
+com centro espalhador do meio
+
+3294:	SUBROUTINE DOFISTATESCAT(L,TNOW,DTLEFT,DELTAT,NEWMASS,
+Realiza a radiação de estado final após a colisão
+com centro espalhador do meio
+
+3636:	SUBROUTINE GETQVEC(L,J,DT,X)
+Algum tipo de subrotina cinemática, preciso investigar mais
+
+3803:      SUBROUTINE DOKINEMATICS(L,lold,N1,N2,NEWM,RETRYSPLIT,
+3804:     &	TIME,X,Z,QQBAR)
+Algum tipo de subrotina cinemática, preciso investigar mais
+
+5799:	SUBROUTINE SPLITFNCINT(EMAX)
+Integral da splitting function?
+
+5884:	SUBROUTINE PDFINT(EMAX)
+Integral da Parton Distribution Function, necessária para
+a radiação de estado inicial
+
+5941:	SUBROUTINE XSECINT(EMAX)
+Integral da seção de choque diferencial
+
+6031:	SUBROUTINE INSUDAINT(EMAX)
+Algo a ver com o fator de Sudakov
+
+*****************************************************************
+A partir daqui são subrotinas numéricas:
+*****************************************************************
+
+6075:	SUBROUTINE EIXINT
+Função especial de algum tipo, não sei se preciso saber
+sobre isso, prioridade baixa
+
+6127:	subroutine odeint(ystart,a,b,eps,h1,hmin,w1)
+Subrotina de integração numérica de equação diferencial
+
+6166:	subroutine rkstepper(x,y,dydx,htest,hdid,hnew,yscale,eps,w1)
+Subrotina de Runge-Kutta
+
+6613:      SUBROUTINE PEVREC(NUM,COL)
+Não sei o propósito dessa subrotina, preciso descobrir
+
+*****************************************************************
+Subrotinas de impressão:
+*****************************************************************
+
+6653:	SUBROUTINE CONVERTTOHEPMC(J,EVNUM,PID,beam1,beam2)
+Converte o evento para hepmc, bem óbvio
+
+6953:	subroutine printlogo(fid)
+Impressão do logo do JEWEL
+
+7034:	subroutine printtime
+Imprime o horário e data
