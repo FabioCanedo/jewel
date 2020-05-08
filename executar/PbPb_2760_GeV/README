@@ -1,0 +1,8 @@
+The files contained in this folder serve the following purpose:
+
+exec.sh: Runs JEWEL in its default mode
+read.sh: Runs JEWEL with an external medium identical to JEWEL's medium
+modmed.sh: Runs JEWEL with TRENTo initial conditions and ideal evolution
+mckln.sh: Runs JEWEL with MC-KLN initial conditions and ideal evolution
+vusp.sh: Runs JEWEL with MC-KLN initial conditions and v-USPhydro evolution code
+trento_vusp.sh: Same as above, but with TRENTo initial conditions 
