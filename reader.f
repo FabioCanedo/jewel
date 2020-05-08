@@ -21,8 +21,7 @@ C++                                                            ++
       
       open(unit=1,file=filename,iostat=ios)
       
-      t=0.6d0
-      timesteps(1)=t
+      timesteps(1)=0.d0
       k=1
 
       do while (ios.eq.0)
@@ -51,19 +50,48 @@ C++                                                            ++
       geti=1+(x-xmin)/dx
       end function
 
-      double precision function interpol(x,y,np,tgrid)
+      integer function getk(t,timesteps)
+      implicit none
+      integer getk,k
+      double precision t
+      double precision timesteps(60)
+      t=0.d0
+      getk=60
+      do k=1,60
+
+      if(timesteps(k).ge.t) then
+      getk=k
+      endif
+
+      enddo
+      end function
+
+
+      double precision function interpol(t,x,y,np,timesteps,tgrid)
       implicit none
       integer i,j,ii,jj,iii,jjj,np
-      double precision tgrid(np,np),igrid(4,4),xgrid(4,4),ygrid(4,4)
-      double precision xmax,xmin,dx
-      double precision x,y,xa,ya
+      integer k,kk
+      double precision timesteps(60)
+      double precision tgrid(np,np,60),igrid(4,4),xgrid(4,4),ygrid(4,4)
+      double precision xmax,xmin,dx,dt
+      double precision t,x,y,xa,ya
+      double precision f(2)
       double precision interpol,bicubic
+      integer getk
+
+      k=getk(t,timesteps)
+      dt=timesteps(k+1)-timesteps(k)
       
+      xmax=25.d0
+      xmin=-25.d0
+      dx=(xmax-xmin)/(np-1)
+
       i=1+floor((x-xmin)/dx)
       j=1+floor((y-xmin)/dx)
       xa=mod(x-xmin,dx)
       ya=mod(y-xmin,dx)
 
+      do kk=1,2
       do ii=1,4
             do jj=1,4
                   iii=i+ii-2
@@ -73,14 +101,17 @@ C++                                                            ++
                   else if (jjj.gt.np.or.jjj.lt.1) then
                         igrid(ii,jj)=0.d0
                   else
-                        igrid(ii,jj)=tgrid(iii,jjj)
+                        igrid(ii,jj)=tgrid(iii,jjj,k-1+kk)
                   end if
                   xgrid(ii,jj)=xmin+(ii-1)*dx
                   ygrid(ii,jj)=xmin+(jj-1)*dx
             enddo
       enddo
 
-      interpol=bicubic(xa,ya,dx,xmin,xmax,igrid,xgrid,ygrid)
+      f(kk)=bicubic(xa,ya,dx,xmin,xmax,igrid,xgrid,ygrid)
+      enddo
+
+      interpol=f(1)+(t-timesteps(k))*(f(2)-f(1))/dt
       end function
       
       double precision function bicubic(xa,ya,dx,xmin,xmax,igrid,xc,yc)
