@@ -1,0 +1,26 @@
+avscatcen -> getms
+getltimemax -> medinit
+getmd -> gettemp
+getmdmax -> getmd,gettempmax
+getmdmin -> getmd,gettempmax
+getms -> getmd
+getnatmdmin -> getmdmin
+getneff -> gettemp
+getneffmax -> gettempmax
+getscatterer -> getmd, getms, gettemp
+gettemp -> interpolate,medinit,medpart,npart     
+gettempmax -> medinit
+maxscatcen -> getmsmax
+medderiv -> only needed for integration in jewel function, when its called from medium code,
+so it can be left alone with no loss
+medinit -> reader comes into action
+mednextevt
+pickvtx -> gettemp,nthick
+
+Conclusion:
+
+functions that require alteration:
+gettemp,gettempmax,medinit
+
+functions that aren't needed:
+medpart,npart

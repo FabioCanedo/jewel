@@ -1,0 +1,55 @@
+gfortran -g -static -Wno-extra  -c -o mymed.o mymed.f
+gfortran -g -static -Wno-extra  -c -o medium-simple.o medium-simple.f
+gfortran -g -static -Wno-extra  -c -o pythia6425mod.o pythia6425mod.f
+gfortran -g -static -Wno-extra  -c -o meix.o meix.f
+gfortran -o jewel-2.2.0-med -L/sampa/fcanedo/lhapdf/lib mymed.o medium-simple.o pythia6425mod.o meix.o -lLHAPDF
+gfortran -g -static -Wno-extra  -c -o jewel-2.2.0.o jewel-2.2.0.f
+gfortran -o jewel-2.2.0-simple -L/sampa/fcanedo/lhapdf/lib jewel-2.2.0.o medium-simple.o pythia6425mod.o meix.o -lLHAPDF
+gfortran -o jewel-2.2.0-vac -L/sampa/fcanedo/lhapdf/lib jewel-2.2.0.o pythia6425mod.o meix.o -lLHAPDF
+jewel-2.2.0.o: In function `init_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:618: undefined reference to `medinit_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:619: undefined reference to `mednextevt_'
+jewel-2.2.0.o: In function `genevent_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:1088: undefined reference to `mednextevt_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:1092: undefined reference to `pickvtx_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:1093: undefined reference to `getltimemax_'
+jewel-2.2.0.o: In function `makesplitting_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:2420: undefined reference to `gettemp_'
+jewel-2.2.0.o: In function `doinstatescat_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:2945: undefined reference to `getmd_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:2946: undefined reference to `getms_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:2949: undefined reference to `gettemp_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:2950: undefined reference to `getneff_'
+jewel-2.2.0.o: In function `getpnorad1_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:3585: undefined reference to `getmd_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:3587: undefined reference to `avscatcen_'
+jewel-2.2.0.o: In function `getqvec_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:3686: undefined reference to `getmd_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:3689: undefined reference to `avscatcen_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:3703: undefined reference to `getscatterer_'
+jewel-2.2.0.o: In function `dokinematics_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:4198: undefined reference to `gettemp_'
+jewel-2.2.0.o: In function `deriv_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:4536: undefined reference to `medderiv_'
+jewel-2.2.0.o: In function `getsscat_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:5224: undefined reference to `getmd_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:5226: undefined reference to `avscatcen_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:5233: undefined reference to `getmdmin_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:5235: undefined reference to `getmdmax_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:5237: undefined reference to `maxscatcen_'
+jewel-2.2.0.o: In function `splitfncint_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:5827: undefined reference to `maxscatcen_'
+jewel-2.2.0.o: In function `pdfint_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:5908: undefined reference to `maxscatcen_'
+jewel-2.2.0.o: In function `xsecint_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:5965: undefined reference to `maxscatcen_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:5972: undefined reference to `getmdmin_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:5973: undefined reference to `getmdmax_'
+jewel-2.2.0.o: In function `insudaint_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:6051: undefined reference to `maxscatcen_'
+jewel-2.2.0.o: In function `getdeltat_':
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:6299: undefined reference to `getneffmax_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:6300: undefined reference to `getnatmdmin_'
+/sampa/fcanedo/jewel-2.2.0/jewel-2.2.0.f:6315: undefined reference to `getneff_'
+collect2: ld returned 1 exit status
+make: *** [jewel-2.2.0-vac] Error 1

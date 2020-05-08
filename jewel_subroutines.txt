@@ -11,7 +11,10 @@ essas são especificadas pelas variáveis beam1 e beam2
 Gera j eventos com projéteis b1 e b2
 
 1520:	SUBROUTINE MAKESTRINGS(WHICH)
-Monta as strings para a hadronização
+Monta as strings para a hadronização chamando uma das duas
+subrotinas:
+      MAKESTRINGS_VAC
+      MAKESTRINGS_MINL
 
 1539:      SUBROUTINE MAKESTRINGS_VAC
 Monta as strings para a hadronização no vácuo

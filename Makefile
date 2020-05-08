@@ -17,7 +17,7 @@ jewel-2.2.0-vac: jewel-2.2.0.o medium-vac.o pythia6425mod.o meix.o
 jewel-2.2.0-simple: jewel-2.2.0.o medium-simple.o pythia6425mod.o meix.o
 	$(FC) -o $@ -L$(LHAPDF_PATH) $^ -lLHAPDF
 
-jewel-2.2.0-reader: jewel-2.2.0.o medium-reader.o pythia6425mod.o meix.o
+jewel-2.2.0-reader: jewel-2.2.0.o medium-reader.o reader.o pythia6425mod.o meix.o
 	$(FC) -o $@ -L$(LHAPDF_PATH) $^ -lLHAPDF
 
 clean:

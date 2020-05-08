@@ -8,66 +8,48 @@ C++   for JEWEL                                                ++
 
 C++   This is the main subroutine that performs the reading    ++
 C++                                                            ++
-      subroutine reader(filename,np,nt,tprofile)
+      subroutine reader(filename,np,nt,timesteps,tprofile)
       implicit none
-      integer i,np,nt
-      integer signal
+      integer i,j,k
+      integer np,nt
+      integer geti
+      integer ios
       character*100 filename
-      double precision tprofile(101,101,60)
+      double precision timesteps(60)
+      double precision tprofile(np,np,60)
+      double precision t,x,y,temp
       
-      open(unit=1,file=filename,iostat=signal)
-      call readheader
-      i=0
-      do while(signal.eq.0)
-      call readtimestep(signal,i,np,tprofile)
-      end do
-      end subroutine
-
-C++   This routine reads the header lines and ignores them     ++
-C++                                                            ++
-      subroutine readheader
-      implicit none
-      integer i
-      character *10 dummyline
-      do i=1,8
-      read(1,*) dummyline
-      end do
-      end subroutine
-
-C++   This is the main subroutine that performs the reading    ++
-C++   a single timestep                                        ++
-      subroutine readtimestep(signal,k,np,tprofile)
-      implicit none
-      integer i,j,k,np
-      integer signal
-      double precision tline(np)
-      double precision tgrid(np,np)
-      character line(20*np)
-      double precision tprofile(101,101,60)
-      do i=1,np
-      read(1,*) tline
-      tgrid(i,:)=tline
-      enddo
-      call inserttimestep(k,np,tgrid,tprofile)
-      end subroutine
-
-C++   This is the main subroutine that inserts the timestep    ++
-C++   into the tprofile                                        ++
-      subroutine inserttimestep(k,np,tgrid,tprofile)
-      implicit none
-      integer i,j,k,np
-      double precision tgrid(np),tprofile(101,101,60)
-      double precision x,y,interpol
-
-      do i=1,101
-            do j=1,101
-                  x=-15.d0+(i-1)*0.3d0
-                  y=-15.d0+(j-1)*0.3d0
-                  tprofile(i,j,k)=interpol(x,y,tgrid)
-            enddo
-      enddo
+      open(unit=1,file=filename,iostat=ios)
       
-      endsubroutine
+      t=0.6d0
+      timesteps(1)=t
+      k=1
+
+      do while (ios.eq.0)
+
+      read(1,*,iostat=ios) t,x,y,temp
+      i=geti(x,np)
+      j=geti(y,np)
+
+      if(t.ne.timesteps(k)) then
+      k=k+1
+      timesteps(k)=t
+      end if
+
+      tprofile(i,j,k)=temp
+
+      end do
+      
+      end subroutine
+
+      integer function geti(x,np)
+      implicit none
+      integer np
+      double precision x,xmin,xmax,dx
+      
+      dx=(xmax-xmin)/(np-1)
+      geti=1+(x-xmin)/dx
+      end function
 
       double precision function interpol(x,y,np,tgrid)
       implicit none
