@@ -66,8 +66,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDFILEC/MEDFILE,NLIST,endoff
       CHARACTER*200 MEDFILE
       INTEGER NLIST
@@ -87,6 +87,8 @@ C--longitudinal boost of momentum distribution
 C--factor to vary Debye mass
 	COMMON/MDFAC/MDFACTOR,MDSCALEFAC
 	DOUBLE PRECISION MDFACTOR,MDSCALEFAC
+      common/temperature/tempfac
+      double precision tempfac
 C--nuclear thickness function
       COMMON /THICKFNC/ RMAX,TA(100,2)
       DOUBLE PRECISION RMAX,TA
@@ -137,11 +139,11 @@ C--default settings
       SIGMANN=6.2
 	MDFACTOR=0.45d0
 	MDSCALEFAC=0.9d0
+      tempfac=1.0d0
 	boost = .true.
 
 C--read settings from file
 	write(logfid,*)
-      WRITE(*,*) "Inserting small check: ",FILE
 	inquire(file=FILE,exist=fileexist)
 	if(fileexist)then
         write(logfid,*)'Reading medium parameters from ',FILE
@@ -238,8 +240,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -288,8 +290,8 @@ C--pick an impact parameter
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       getcentrality=centr
       end
 
@@ -304,8 +306,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
 C--internal medium parametersa
       COMMON/TEMPMAX/TEMPMAXIMUM
       DOUBLE PRECISION TEMPMAXIMUM
@@ -319,45 +321,36 @@ C--local variables
       DOUBLE PRECISION X1,X2,Y1,Y2,Z,XVAL,YVAL,ZVAL,NTHICK,PYR,MEDPART  &
      & ,rval
       integer i,j,k
-      double precision s,prob(59049),gettemp
+      double precision s,gettemp
       logical myprob
 
       myprob=.true.
-      tempmaximum=0.d0
+      !tempmaximum=0.d0
         
       IF(myprob) THEN
-      s=0.0d0
-      !write(*,*) "taui=",taui
-      do i=0,242
-            do j=0,242
-                  x1=-10.d0+i*(20.d0/242.d0)
-                  y1=-10.d0+j*(20.d0/242.d0)
-                  s=s+gettemp(x1,y1,0.0d0,taui)**4
-                  if(tempmaximum.lt.gettemp(x1,y1,0.0d0,taui)) then
-                  tempmaximum=gettemp(x1,y1,0.0d0,taui)
-                  endif
-                  prob(i*243+j+1)=s
-            enddo
-      enddo
-      prob=prob/s
 100   zval=pyr(0)
 
       !write(*,*) "zval = ",zval
+      !write(*,*) "Pick vtx called"
+      !write(*,*) prob(834**2)
+
 
       k=0
-      do k=1,59049
+      do k=1,834**2
             if(prob(k).gt.zval) then
-              i=k/243
-              j=mod(k,243)
-              xval=-10.d0+(i-1)*(20.d0/242.d0)
-              yval=-10.d0+(j-1)*(20.d0/242.d0)
+              i=k/834
+              j=mod(k,834)
+              xval=-25.d0+(i-1)*(50.d0/833.d0)
+              yval=-25.d0+(j-1)*(50.d0/833.d0)
               rval=(xval**2+yval**2)**(0.5d0)
-              if(rval.gt.1.1d0*(208.0d0**(0.333))) then
+              if(rval.gt.1.12d0*(208.0d0**(0.333))) then
               go to 100
-              elseif(gettemp(xval,yval,0.0d0,taui).lt.tc) then
+              elseif(gettemp(xval,yval,0.0d0,taui).lt.1.0d0*tc) then
               go to 100
               endif
               !write(*,*) "xvtx=",xval," yvtx=",yval
+              x=xval
+              y=yval
               return
             endif
       enddo
@@ -378,7 +371,6 @@ C--local variables
       END IF
       X=XVAL
       Y=YVAL
-      !write(*,*) "xvtx=",x," yvtx=",y
       END
 
 	SUBROUTINE SETB(BVAL)
@@ -389,8 +381,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
 	DOUBLE PRECISION BVAL
 	BREAL=BVAL
 	END
@@ -405,8 +397,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
 C--internal medium parameters
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED
@@ -536,8 +528,10 @@ C--factor to vary Debye mass
 	COMMON/MDFAC/MDFACTOR,MDSCALEFAC
 	DOUBLE PRECISION MDFACTOR,MDSCALEFAC
       DOUBLE PRECISION X1,Y1,Z1,T1,GETTEMP
+      double precision getmdmin
       GETMD=MDSCALEFAC*3.*GETTEMP(X1,Y1,Z1,T1)
-      GETMD=MAX(GETMD,MDFACTOR)
+      !GETMD=MAX(GETMD,MDFACTOR)
+      GETMD=MAX(GETMD,GETMDMIN())
       END
 
 
@@ -557,14 +551,16 @@ C--factor to vary Debye mass
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
       LOGICAL WOODSSAXON,MODMED
+      common/temperature/tempfac
+      double precision tempfac
 C--   local variables
       DOUBLE PRECISION X3,Y3,Z3,T3,PI,GETTEMP,tau,cosheta
       DATA PI/3.141592653589793d0/
@@ -585,8 +581,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -596,9 +592,12 @@ C--medium parameters
 C--max rapidity
 	common/rapmax2/etamax2
 	double precision etamax2
+      common/temperature/tempfac
+      double precision tempfac
 C--local variables
       DOUBLE PRECISION X4,Y4,Z4,T4,TAU,NPART,EPS0,EPSIN,TEMPIN,PI,
-     &NTHICK,ys,MEDPART,interpol
+     &NTHICK,ys,MEDPART,interpolate
+      double precision gettempmax
       DATA PI/3.141592653589793d0/
 
       GETTEMP=0.D0
@@ -606,9 +605,19 @@ C--local variables
       IF(ABS(Z4).GT.T4)RETURN
 
       TAU=SQRT(T4**2-Z4**2)
+      if(tau.eq.0.d0) then
+      return
+      end if
 
-      GETTEMP=interpol(tau,X4,Y4,834,timesteps,tprofile)
+      GETTEMP=tempfac*interpolate(X4,Y4,tau)
       if(gettemp.lt.tc) gettemp=0.0d0
+      if(gettemp.ge.gettempmax()) gettemp=gettempmax()
+
+      !write(*,*) "Get temp called:"
+      !write(*,*) "(x,y,z,t)=",x4,y4,z4,t4,tau
+      !write(*,*) "Temp=",gettemp
+      !write(*,*) gettempmax()
+
       RETURN
 
       END
@@ -625,8 +634,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -637,6 +646,7 @@ C--function call
       DOUBLE PRECISION GETTEMP
       
       !GETTEMPMAX=GETTEMP(0.D0,0.D0,0.D0,TAUI)
+      !write(*,*) "Max temp:", tempmaximum
       GETTEMPMAX=TEMPMAXIMUM
       END
 
@@ -662,8 +672,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -696,8 +706,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -730,8 +740,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -747,7 +757,8 @@ C--function call
 	  GETLTIMEMAX=TAUI*(GETTEMPMAX()/TC)**3*cosh(etamax2)
       else
       !Fabio: Putting my LTIME
-      GETLTIMEMAX=MODLTIME
+      write(*,*) "Lifetime whithout boost:",modltime
+      GETLTIMEMAX=MODLTIME*cosh(etamax2)
       endif
 	 END
 
@@ -760,14 +771,16 @@ C--function call
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
       LOGICAL WOODSSAXON,MODMED,MEDFILELIST
+      common/temperature/tempfac
+      double precision tempfac
 C--max rapidity
 	common/rapmax2/etamax2
 	double precision etamax2
@@ -805,8 +818,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -851,8 +864,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -897,8 +910,8 @@ C--medium parameters
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -940,6 +953,8 @@ C--local variables
       IMPLICIT NONE
       COMMON/LTIME/MODLTIME
       DOUBLE PRECISION MODLTIME
+      COMMON/TEMPMAX/TEMPMAXIMUM
+      DOUBLE PRECISION TEMPMAXIMUM
       COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
      & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
       COMMON/logfile/logfid
@@ -949,6 +964,8 @@ C--local variables
      &SIGMANN
       INTEGER A
       LOGICAL WOODSSAXON,MODMED,MEDFILELIST
+	common/rapmax2/etamax2
+	double precision etamax2
       COMMON/MEDFILEC/MEDFILE,NLIST,endoff
       CHARACTER*200 MEDFILE
       INTEGER NLIST
@@ -957,8 +974,9 @@ C--local variables
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
+      double precision gridx(834,834),gridy(834,834)
       CHARACTER DUMMIE,CONTENT*100
       DOUBLE PRECISION tempsum,entropy
       INTEGER I,J,K,POS,II,kk,kkk,length
@@ -966,10 +984,11 @@ C--local variables
       double precision hightemp
 C--grid parameters
       common/gridpar/ gdt,gdx,gxmax,gxmin,gnx,gny,gnt
-      double precision gdt,gdx,gxmax,gxmin
-      integer gnx,gny,gnt
+      double precision gdt,gdx,gxmax,gxmin,s
+      integer gnx,gny,gnt,probcounter
 
       NX=834
+      dx=50.d0/834.d0
 
       hightemp=0.d0
 
@@ -979,25 +998,42 @@ C--grid parameters
       do k=1,60
       tprofile(i,j,k)=0.d0
       end do
+      gridx(i,j)=-25.d0+dx*(i-1)
+      gridy(i,j)=-25.d0+dx*(j-1)
       end do
       end do
       
-      call reader(medfile,nx,60,timesteps,tprofile)
+      call reader(medfile,834,60,timesteps,tprofile)
 C--Loop that finds the medium lifetime and also
 C--its evolution in entropy and temperature
 C--as well as its highest temperature
+
+      s=0.d0
+      prob(1)=0.d0
+      probcounter=2
       do k=1,60
       
       ltime=.true.
-      if(mod(k,5).eq.1) then
+      if(.true.) then
       
       entropy=0.d0
       tempsum=0.d0
       do kk=1,NX
             do kkk=1,NX
-            entropy=entropy+tprofile(kk,kkk,k)**(3.d0/4.d0)
-            tempsum=tempsum+tprofile(kk,kkk,k)
-            if(tprofile(kk,kkk,k).le.tc) then
+            entropy=entropy+tprofile(kk,kkk,k)**(3.d0/4.d0)*dx**2
+            tempsum=tempsum+tprofile(kk,kkk,k)**(4.d0)*dx**2
+            if(k.eq.2.and.probcounter.le.834**2) then
+            !if(mod(probcounter,834).eq.2) then
+            !write(*,*) "Line read:",probcounter,prob(probcounter-1)
+            !end if
+            if(tprofile(kk,kkk,k).gt.1.0d0*tc) then
+            s=s+tprofile(kk,kkk,k)**(3.d0)
+            !prob(probcounter)=prob(probcounter-1)+tprofile(kk,kkk,k)
+            end if
+            prob(probcounter)=s
+            probcounter=probcounter+1
+            end if
+            if(tprofile(kk,kkk,k).ge.tc) then
             ltime=.false.
             end if
             if (tprofile(kk,kkk,k) .gt. hightemp) then
@@ -1005,22 +1041,30 @@ C--as well as its highest temperature
             end if
             enddo
       enddo
-      entropy=entropy/(dble(nx)**2)
-      tempsum=tempsum/(dble(nx)**2)
-      write(*,*) "k-1=",K-1
-      write(*,*) "Avg temp=",tempsum
-      write(*,*) "Entropy=",entropy
-      write(*,*) "Highest temp=",hightemp
+      !write(*,*) "k-1=",K-1
+      !write(*,*) "Avg temp=",tempsum
+      !write(*,*) "Entropy=",entropy
+      tempmaximum=hightemp
+      if(k.eq.2) then
+      do kk=1,834**2
+      prob(kk)=prob(kk)/s
+      end do
+      end if
       
       endif
 
-      if(ltime) then
-      nt=k
-      modltime=timesteps(k)
-      write(*,*) "LTIME= ",modltime," k= ",k
+      write(*,*) "Ltime:",ltime
+      if(.not.ltime.and.timesteps(k+1).gt.timesteps(k)) then
+      write(*,*) "Lifetime not reached:",timesteps(k)
+      nt=k+1
+      modltime=timesteps(k+1)
+      else
+      write(*,*) "Lifetime reached:",timesteps(k)
       endif
 
       end do
+      write(*,*) "LTIME= ",modltime
+      write(*,*) "Highest temp=",hightemp
 
       WRITE(*,*) "Temperature profile read succesfully :)"
 
@@ -1039,15 +1083,15 @@ C--as well as its highest temperature
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/timesteps(60),tprofile(834,834,60)
-      double precision timesteps,tprofile
+      common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+      double precision timesteps,tprofile,prob
       DOUBLE PRECISION X4,Y4,Z4,T4
       DOUBLE PRECISION STEP
-      DOUBLE PRECISION TAU,interpol
+      DOUBLE PRECISION TAU,interpolate
       STEP=(XMAX-XMIN)/(NX-1)
       TAU=SQRT(T4**2-Z4)
       TAU=0.0d0
-      MEDPART=interpol(tau,X4,Y4,834,timesteps,tprofile)
+      MEDPART=interpolate(X4,Y4,tau)
       END
 
       DOUBLE PRECISION FUNCTION MEDDERIV(XVAL,W)

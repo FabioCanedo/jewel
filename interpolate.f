@@ -1,11 +1,9 @@
-      DOUBLE PRECISION FUNCTION INTERPOLATE(X4,Y4,T4
-     &,STEP)
+      DOUBLE PRECISION FUNCTION INTERPOLATE(X4,Y4,T4)
       IMPLICIT NONE
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
       INTEGER NX,NY,NT,NF
       DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
+
       common/grid/timesteps(60),tprofile(834,834,60)
       double precision timesteps,tprofile
       double precision tempx(2,2),tempy(2,2),tempxy(2,2)
@@ -16,11 +14,18 @@
       DOUBLE PRECISION T,U,AX,BX,AY,BY,STEP,FRA
       DOUBLE PRECISION ITEMP,FTEMP
     
+      nx=834
+      ny=834
+      nt=60
+      xmax=25.d0
+      xmin=-25.d0
+      dx=(xmax-xmin)/(834.d0-1.d0)
+
       ITEMP=0.0d0
       FTEMP=0.0d0
-      N=INT(MAX((XMAX-XMIN+STEP)/STEP,0.0d0))
-      AX=(X4-XMIN)/(XMAX-XMIN)
-      AY=(Y4-XMIN)/(XMAX-XMIN)
+      N=INT(MAX((XMAX-XMIN+dx)/dx,0.0d0))
+      AX=(X4-xmin)/(xmax-xmin)
+      AY=(Y4-xmin)/(xmax-xmin)
       BX=AX*(N-1)+1
       BY=AY*(N-1)+1
       I=FLOOR(BX)
@@ -28,8 +33,14 @@
       T=BX-I
       U=BY-J
 
-      K=FLOOR(T4/DT)+1
-      FRA=MOD(T4,DT)
+      k=1
+      do ii=1,60
+      if(timesteps(ii).lt.t4) then
+      k=ii
+      fra=(t4-timesteps(ii))/(timesteps(ii+1)-timesteps(ii))
+      end if
+      end do
+
 
       IF(I>nx.OR.J>nx.OR.K>nt.OR.I<1.OR.J<1.OR.K<1) THEN
       INTERPOLATE=0.0d0

@@ -1,0 +1,8 @@
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process)
+log = /sampa/fcanedo/log/exec.$(Process).log
+stdout = /sampa/fcanedo/out/exec.$(Process).out
+stderr = /sampa/fcanedo/err/exec.$(Process).err
+queue 1000

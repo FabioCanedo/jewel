@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Number of the job in question
-export NJOB=163
+export NJOB=$(($1+1))
 echo "NJOB= "$NJOB
 
 #exporting eviroment variables necessary for the run
@@ -20,11 +20,12 @@ chmod 777 $MacroDir/jewel-2.2.0-simple
 source /cvmfs/alice.cern.ch/etc/login.sh
 
 eval `alienv printenv VO_ALICE@GSL::v1.16-25`                                   
-eval `alienv printenv VO_ALICE@boost::v1.59.0-21`                               
-eval `alienv printenv VO_ALICE@HepMC::v2.06.09-13`                              
-eval `alienv printenv VO_ALICE@fastjet::v3.2.1_1.024-alice3-1`                  
-eval `alienv printenv VO_ALICE@YODA::v1.7.0-1`                                  
-eval `alienv printenv VO_ALICE@Rivet::2.6.0-alice1-1`                           
+#eval `alienv printenv VO_ALICE@boost::v1.59.0-21`                               
+#eval `alienv printenv VO_ALICE@HepMC::v2.06.09-13`                              
+#eval `alienv printenv VO_ALICE@fastjet::v3.2.1_1.024-alice3-1`                  
+#eval `alienv printenv VO_ALICE@YODA::v1.7.0-1`                                  
+#eval `alienv printenv VO_ALICE@Rivet::2.6.0-alice1-1`                           
+eval `alienv printenv VO_ALICE@Rivet::2.7.2-alice2-1`                           
 
 #export MED_FILE_NUMBER=`cat $FileDir/first_filelist.txt | head -n $NJOB | tail -n 1`
 #echo "MED FILE NUMBER= "$MED_FILE_NUMBER
@@ -55,7 +56,7 @@ cp pp.dat pp."$NJOB".dat
 sed -i "s/\(MEDFILE\s.*\/\)[0-9]*\(\.dat\)/\1"$MED_FILE_NUMBER"\2/g" pp."$NJOB".dat
 
 cd $MacroDir
-#$MacroDir/jewel-2.2.0-vac $MacroDir/params/pp_5020_GeV/pp."$NJOB".dat
+$MacroDir/jewel-2.2.0-vac $MacroDir/params/pp_5020_GeV/pp."$NJOB".dat
 
 cd $MacroDir/params/pp_5020_GeV/
 rm pp."$NJOB".dat
@@ -74,6 +75,8 @@ rm pp."$NJOB".dat
 #export PSI=`cat jakiPsi | head -n $NJOB | tail -n 1`
 #echo $PSI
 
+export PSI=0.0
+
 #rivet -a MC_GENERIC --ignore-beams -H $YODA_GENERIC_FILE $HEPMC_FILE
-#rivet  -a JET_SHAPE --ignore-beams -H $YODA_SHAPE_FILE $HEPMC_FILE
-rivet -a Z_HADRON --ignore-beams -H $YODA_ZHADRON_FILE $HEPMC_FILE
+rivet  -a JET_SHAPE --ignore-beams -H $YODA_SHAPE_FILE $HEPMC_FILE
+#rivet -a Z_HADRON --ignore-beams -H $YODA_ZHADRON_FILE $HEPMC_FILE

@@ -61,23 +61,15 @@ C+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       SUBROUTINE MEDINIT(FILE,id,etam,mass)
       IMPLICIT NONE
 C--medium parameters
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
-      COMMON/MEDFILEC/MEDFILE,FILELIST,NLIST,endoff
-      CHARACTER*200 MEDFILE,FILELIST
-      INTEGER NLIST
-      logical endoff
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--max rapidity
 	common/rapmax2/etamax2
 	double precision etamax2
@@ -96,10 +88,6 @@ C--geometrical cross section
 C--identifier of log file
 	common/logfile/logfid
 	integer logfid
-C--grid parameters
-      common/gridpar/ gdt,gdx,gxmax,gxmin,gnx,gny,gnt
-      double precision gdt,gdx,gxmax,gxmin
-      integer gnx,gny,gnt
 
       DATA RAU/10./
       DATA D3/0.9d0/
@@ -108,7 +96,7 @@ C--local variables
       INTEGER I,LUN,POS,IOS,id,mass
 	double precision etam
       CHARACTER*100 BUFFER,LABEL,tempbuf
-	CHARACTER*100 FILE
+	CHARACTER*80 FILE
 	character firstchar
 	logical fileexist
 
@@ -118,17 +106,11 @@ C--local variables
       IOS=0
       LUN=77
 
-      NLIST=1
-      endoff=.false.
-
 C--default settings
       TAUI=0.6d0
       TI=0.36d0
       TC=0.17d0
       WOODSSAXON=.TRUE.
-      MODMED=.FALSE.
-      MEDFILELIST=.FALSE.
-      DYNAMICTIME=.FALSE.
       CENTRMIN=0.d0
       CENTRMAX=10.d0
       NF=3
@@ -139,26 +121,18 @@ C--default settings
 	MDFACTOR=0.45d0
 	MDSCALEFAC=0.9d0
 	boost = .true.
-      gnx=243
-      gny=243
-      gnt=200
-      gdt=0.1
-      gdx=0.1
-      gxmax=10.0d0
-      gxmin=-10.0d0
 
 C--read settings from file
 	write(logfid,*)
-      WRITE(*,*) "Inserting small check: ",FILE
 	inquire(file=FILE,exist=fileexist)
 	if(fileexist)then
         write(logfid,*)'Reading medium parameters from ',FILE
         OPEN(unit=LUN,file=FILE,status='old',err=10)
 	  do 20 i=1,1000
           READ(LUN, '(A)', iostat=ios) BUFFER
-	     if (ios.ne.0) goto 30
-	     firstchar = buffer(1:1)
-	     if (firstchar.eq.'#') goto 20
+	    if (ios.ne.0) goto 30
+	    firstchar = buffer(1:1)
+	    if (firstchar.eq.'#') goto 20
           POS=SCAN(BUFFER,' ')
           LABEL=BUFFER(1:POS)
           BUFFER=BUFFER(POS+1:)
@@ -170,16 +144,6 @@ C--read settings from file
             READ(BUFFER,*,IOSTAT=IOS) TC
           ELSE IF (LABEL=="WOODSSAXON") THEN
             READ(BUFFER,*,IOSTAT=IOS) WOODSSAXON
-          ELSE IF (LABEL=="MODMED") THEN
-            READ(BUFFER,*,IOSTAT=IOS) MODMED
-          ELSE IF (LABEL=="MEDFILELIST") THEN
-            READ(BUFFER,*,IOSTAT=IOS) MEDFILELIST
-          ELSE IF (LABEL=="DYNAMICTIME") THEN
-            READ(BUFFER,*,IOSTAT=IOS) DYNAMICTIME
-          ELSE IF (LABEL=="FILELIST") THEN
-            READ(BUFFER,'(80A)',IOSTAT=IOS) FILELIST
-          ELSE IF (LABEL=="MEDFILE") THEN
-            READ(BUFFER,'(50A)',IOSTAT=IOS) MEDFILE
           ELSE IF (LABEL=="CENTRMIN") THEN
             READ(BUFFER,*,IOSTAT=IOS) CENTRMIN
           ELSE IF (LABEL=="CENTRMAX") THEN
@@ -196,23 +160,9 @@ C--read settings from file
             READ(BUFFER,*,IOSTAT=IOS) MDFACTOR
           ELSE IF (LABEL=="MDSCALEFAC") THEN
             READ(BUFFER,*,IOSTAT=IOS) MDSCALEFAC
-          ELSE IF (LABEL=="NX") THEN
-            READ(BUFFER,*,IOSTAT=IOS) gnx
-          ELSE IF (LABEL=="NY") THEN
-            READ(BUFFER,*,IOSTAT=IOS) gny
-          ELSE IF (LABEL=="NT") THEN
-            READ(BUFFER,*,IOSTAT=IOS) gnt
-          ELSE IF (LABEL=="DT") THEN
-            READ(BUFFER,*,IOSTAT=IOS) gdt
-          ELSE IF (LABEL=="DX") THEN
-            READ(BUFFER,*,IOSTAT=IOS) gdx
-          ELSE IF (LABEL=="XMAX") THEN
-            READ(BUFFER,*,IOSTAT=IOS) gxmax
-          ELSE IF (LABEL=="XMIN") THEN
-            READ(BUFFER,*,IOSTAT=IOS) gxmin
-	     else
-       write(logfid,*)'unknown label ',label
-	     endif
+	    else
+	      write(logfid,*)'unknown label ',label
+	    endif
  20	  continue
 
  30	  close(LUN,status='keep')
@@ -228,52 +178,44 @@ C--read settings from file
 	endif
 
  40   write(logfid,*)'using parameters:'
-      write(logfid,*)'TAUI        =',TAUI
-      write(logfid,*)'TI          =',TI
-      write(logfid,*)'TC          =',TC
-      write(logfid,*)'WOODSSAXON  =',WOODSSAXON
-      write(logfid,*)'MODMED      =',MODMED
-      write(logfid,*)'MEDFILELIST =',MEDFILELIST
-      write(logfid,*)'CENTRMIN    =',CENTRMIN
-      write(logfid,*)'CENTRMAX    =',CENTRMAX
-      write(logfid,*)'NF          =',NF
-      write(logfid,*)'A           =',A
-      write(logfid,*)'N0          =',N0
-      write(logfid,*)'D           =',D
-      write(logfid,*)'SIGMANN     =',SIGMANN
-      write(logfid,*)'MDFACTOR    =',MDFACTOR
-      write(logfid,*)'MDSCALEFAC  =',MDSCALEFAC
-      write(logfid,*)
-      write(logfid,*)
-      write(logfid,*)
+      write(logfid,*)'TAUI       =',TAUI
+      write(logfid,*)'TI         =',TI
+      write(logfid,*)'TC         =',TC
+      write(logfid,*)'WOODSSAXON =',WOODSSAXON
+      write(logfid,*)'CENTRMIN   =',CENTRMIN
+      write(logfid,*)'CENTRMAX   =',CENTRMAX
+      write(logfid,*)'NF         =',NF
+      write(logfid,*)'A          =',A
+      write(logfid,*)'N0         =',N0
+      write(logfid,*)'D          =',D
+      write(logfid,*)'SIGMANN    =',SIGMANN
+      write(logfid,*)'MDFACTOR   =',MDFACTOR
+      write(logfid,*)'MDSCALEFAC =',MDSCALEFAC
+	write(logfid,*)
+	write(logfid,*)
+	write(logfid,*)
 
 C--calculate T_A(x,y)
       CALL CALCTA
 C--calculate geometrical cross section
       CALL CALCXSECTION
 
-      IF(MODMED) THEN
-      CALL MYMED()
-      END IF
-     
       END
+
+
 
       SUBROUTINE MEDNEXTEVT
       IMPLICIT NONE
 C--medium parameters
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--geometrical cross section
       COMMON /CROSSSEC/ IMPMAX,CROSS(200,3)
       DOUBLE PRECISION IMPMAX,CROSS
@@ -297,27 +239,14 @@ C--pick an impact parameter
       breal = (b2*(cross(i,3)/cross(200,3)-r)
      &      +b1*(r-cross(i+1,3)/cross(200,3)))/
      &	(cross(i,3)/cross(200,3)-cross(i+1,3)/cross(200,3))
-      !write(*,*) "Parâmetro de impacto = ",breal
       centr = r;
-      
-
-      !IF(MODMED) THEN
-      !write(*,*) "Reading medium"
-      !CALL MYMED()
-      !write(*,*) "Finished reading medium"
-      !ENDIF
-
       END
 
       double precision function getcentrality()
       implicit none
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       getcentrality=centr
       end
 
@@ -327,98 +256,33 @@ C--pick an impact parameter
       IMPLICIT NONE
       DOUBLE PRECISION X,Y
 C--medium parameters
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
-C--internal medium parametersa
-      COMMON/TEMPMAX/TEMPMAXIMUM
-      DOUBLE PRECISION TEMPMAXIMUM
-      COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
-      DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
-     &SIGMANN
-      INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
 C--local variables
-      DOUBLE PRECISION X1,X2,Y1,Y2,Z,XVAL,YVAL,ZVAL,NTHICK,PYR,MEDPART  &
-     & ,rval
-      integer i,j,k
-      double precision s,prob(59049),gettemp
-      logical myprob
+      DOUBLE PRECISION X1,X2,Y1,Y2,Z,XVAL,YVAL,ZVAL,NTHICK,PYR
 
-      myprob=.true.
-      tempmaximum=0.d0
-        
-      IF(myprob) THEN
-      s=0.0d0
-      !write(*,*) "taui=",taui
-      do i=0,242
-            do j=0,242
-                  x1=-10.d0+i*(20.d0/242.d0)
-                  y1=-10.d0+j*(20.d0/242.d0)
-                  s=s+gettemp(x1,y1,0.0d0,taui)**4
-                  if(tempmaximum.lt.gettemp(x1,y1,0.0d0,taui)) then
-                  tempmaximum=gettemp(x1,y1,0.0d0,taui)
-                  endif
-                  prob(i*243+j+1)=s
-            enddo
-      enddo
-      prob=prob/s
-100   zval=pyr(0)
-
-      !write(*,*) "zval = ",zval
-
-      k=0
-      do k=1,59049
-            if(prob(k).gt.zval) then
-              i=k/243
-              j=mod(k,243)
-              xval=-10.d0+(i-1)*(20.d0/242.d0)
-              yval=-10.d0+(j-1)*(20.d0/242.d0)
-              rval=(xval**2+yval**2)**(0.5d0)
-              if(rval.gt.1.1d0*(208.0d0**(0.333))) then
-              go to 100
-              elseif(gettemp(xval,yval,0.0d0,taui).lt.tc) then
-              go to 100
-              endif
-              !write(*,*) "xvtx=",xval," yvtx=",yval
-              return
-            endif
-      enddo
-
-
-      ELSE
-      X1=BREAL/2.d0-RAU
-      X2=RAU-BREAL/2.d0
-      Y1=-SQRT(4*RAU**2-BREAL**2)/2.d0
-      Y2=SQRT(4*RAU**2-BREAL**2)/2.d0
+      X1=BREAL/2.-RAU
+      X2=RAU-BREAL/2.
+      Y1=-SQRT(4*RAU**2-BREAL**2)/2.
+      Y2=SQRT(4*RAU**2-BREAL**2)/2.
  131  XVAL=PYR(0)*(X2-X1)+X1
       YVAL=PYR(0)*(Y2-Y1)+Y1
       IF((NTHICK(XVAL-BREAL/2.,YVAL).EQ.0.d0).OR.
      &     NTHICK(XVAL+BREAL/2.,YVAL).EQ.0.d0) GOTO 131
-      ZVAL=PYR(0)*NTHICK(-BREAL/2.d0,0d0)*NTHICK(BREAL/2.d0,0d0)
-      Z=NTHICK(XVAL-BREAL/2.d0,YVAL)*NTHICK(XVAL+BREAL/2.d0,YVAL)
+      ZVAL=PYR(0)*NTHICK(-BREAL/2.,0d0)*NTHICK(BREAL/2.,0d0)
+      Z=NTHICK(XVAL-BREAL/2.,YVAL)*NTHICK(XVAL+BREAL/2.,YVAL)
       IF(ZVAL.GT.Z) GOTO 131
-      END IF
       X=XVAL
       Y=YVAL
-      !write(*,*) "xvtx=",x," yvtx=",y
       END
 
 	SUBROUTINE SETB(BVAL)
 	IMPLICIT NONE
 C--medium parameters
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
 	DOUBLE PRECISION BVAL
 	BREAL=BVAL
 	END
@@ -428,20 +292,16 @@ C--medium parameters
       SUBROUTINE GETSCATTERER(X,Y,Z,T,TYPE,PX,PY,PZ,E,MS)
       IMPLICIT NONE
 C--medium parameters
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
 C--internal medium parameters
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--longitudinal boost of momentum distribution
 	common/boostmed/boost
 	logical boost
@@ -467,7 +327,7 @@ C--local variables
       TEMP=GETTEMP(X,Y,Z,T)
 	tau=sqrt(t**2-z**2)
 	if (boost) then
-  	  ys = 0.5d0*log((t+z)/(t-z))
+  	  ys = 0.5*log((t+z)/(t-z))
 	else
 	  ys = 0.d0
 	endif
@@ -580,19 +440,15 @@ C--factor to vary Debye mass
 
       DOUBLE PRECISION FUNCTION GETNEFF(X3,Y3,Z3,T3)
       IMPLICIT NONE
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--   local variables
       DOUBLE PRECISION X3,Y3,Z3,T3,PI,GETTEMP,tau,cosheta
       DATA PI/3.141592653589793d0/
@@ -608,25 +464,21 @@ C--   local variables
       DOUBLE PRECISION FUNCTION GETTEMP(X4,Y4,Z4,T4)
       IMPLICIT NONE
 C--medium parameters
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--max rapidity
 	common/rapmax2/etamax2
 	double precision etamax2
 C--local variables
       DOUBLE PRECISION X4,Y4,Z4,T4,TAU,NPART,EPS0,EPSIN,TEMPIN,PI,
-     &NTHICK,ys,MEDPART,STEP,INTERPOLATE,NMINUSONE
+     &NTHICK,ys
       DATA PI/3.141592653589793d0/
 
       GETTEMP=0.D0
@@ -634,54 +486,34 @@ C--local variables
       IF(ABS(Z4).GT.T4)RETURN
 
       TAU=SQRT(T4**2-Z4**2)
-      IF(MEDFILELIST) THEN
+C--check for overlap region
+      IF((NTHICK(X4-BREAL/2.,Y4).EQ.0.d0).OR.
+     &NTHICK(X4+BREAL/2.,Y4).EQ.0.d0) RETURN
 
-      NMINUSONE=NX-1.D0
-      STEP=(xmax-xmin)/NMINUSONE
-      GETTEMP=INTERPOLATE(X4,Y4,TAU,STEP)
-      if(gettemp.lt.tc) gettemp=0.0d0
-      RETURN
-
-      ENDIF
-      
-      
-      IF(MODMED)THEN
+	ys = 0.5*log((t4+z4)/(t4-z4))
+	if (abs(ys).gt.etamax2) return
+C--determine initial temperature at transverse position
+      IF(WOODSSAXON)THEN
          EPS0=(16.*8.+7.*2.*6.*NF)*PI**2*TI**4/240.
-         EPSIN=EPS0*MEDPART(X4,Y4,0.0d0,taui)
+         EPSIN=EPS0*NPART(X4-BREAL/2.,Y4,X4+BREAL/2.,Y4)
+     &        *PI*RAU**2/(2.*A)
+      !write(*,*) "Initial energy density:",epsin
+      !write(*,*) "Nuclear radius:",rau
+      !write(*,*) "Nuclear mass number:",a
+      !write(*,*) "Number of participants:",
+     &!npart(x4-breal/2.,y4,x4+breal/2.,y4)
          TEMPIN=(EPSIN*240./(PI**2*(16.*8.+7.*2.*6.*NF)))**0.25
       ELSE
-C--check for overlap region      
-         IF((NTHICK(X4-BREAL/2.,Y4).EQ.0.d0).OR.
-     &   NTHICK(X4+BREAL/2.,Y4).EQ.0.d0) RETURN
-
-	   ys = 0.5*log((t4+z4)/(t4-z4))
-	   if (abs(ys).gt.etamax2) return   
-C--determine initial temperature at transverse position
-         IF(WOODSSAXON)THEN
-            EPS0=(16.*8.+7.*2.*6.*NF)*PI**2*TI**4/240.
-            EPSIN=EPS0*NPART(X4-BREAL/2.,Y4,X4+BREAL/2.,Y4)
-     &           *PI*RAU**2/(2.*A)
-            TEMPIN=(EPSIN*240./(PI**2*(16.*8.+7.*2.*6.*NF)))**0.25
-         ELSE
-            TEMPIN=TI
-         ENDIF
+         TEMPIN=TI
       ENDIF
-      IF(.NOT.MEDFILELIST) THEN
-      IF(TAU.LE.TAUI) THEN
 C--calculate temperature if before initial time
+      IF(TAU.LE.TAUI)THEN
 	 GETTEMP=TEMPIN*TAU/TAUI
       ELSE
 C--evolve temperature
        GETTEMP=TEMPIN*(TAUI/TAU)**0.3333
       ENDIF
-      ENDIF
       IF(GETTEMP.LT.TC) GETTEMP=0.d0
-
-
-      !if(tau.gt.0.55.and.tau.lt.0.65.and.abs(x4) .lt. 1.0 .and. abs(y4) &
-      !&.lt. 1.0) then
-      !write(*,*) "Temperature= ",gettemp
-      !endif
       END
 
 
@@ -689,26 +521,18 @@ C--evolve temperature
       DOUBLE PRECISION FUNCTION GETTEMPMAX()
       IMPLICIT NONE
 C--medium parameters
-      COMMON/TEMPMAX/TEMPMAXIMUM
-      DOUBLE PRECISION TEMPMAXIMUM
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--function call
       DOUBLE PRECISION GETTEMP
-      
-      !GETTEMPMAX=GETTEMP(0.D0,0.D0,0.D0,TAUI)
-      GETTEMPMAX=TEMPMAXIMUM
+      GETTEMPMAX=GETTEMP(0.D0,0.D0,0.D0,TAUI)
       END
 
 
@@ -728,19 +552,15 @@ C--factor to vary Debye mass
       DOUBLE PRECISION FUNCTION GETMDMIN()
       IMPLICIT NONE
 C--medium parameters
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--factor to vary Debye mass
 	COMMON/MDFAC/MDFACTOR,MDSCALEFAC
 	DOUBLE PRECISION MDFACTOR,MDSCALEFAC
@@ -762,19 +582,15 @@ C--factor to vary Debye mass
 	DOUBLE PRECISION FUNCTION GETNATMDMIN()
 	IMPLICIT NONE
 C--medium parameters
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--max rapidity
 	common/rapmax2/etamax2
 	double precision etamax2
@@ -794,51 +610,37 @@ C--local variables
 	DOUBLE PRECISION FUNCTION GETLTIMEMAX()
 	IMPLICIT NONE
 C--medium parameters
-      COMMON/LTIME/MODLTIME
-      DOUBLE PRECISION MODLTIME
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--max rapidity
 	common/rapmax2/etamax2
 	double precision etamax2
 C--function call
       DOUBLE PRECISION GETTEMPMAX
-      if(medfilelist.eqv..false.) then
-	  GETLTIMEMAX=TAUI*(GETTEMPMAX()/TC)**3*cosh(etamax2)
-      else
-      !Fabio: Putting my LTIME
-      GETLTIMEMAX=MODLTIME
-      endif
-	 END
+	GETLTIMEMAX=TAUI*(GETTEMPMAX()/TC)**3*cosh(etamax2)
+      !write(*,*) "Lifetime whithout boost:",getltimemax/cosh(etamax2)
+	END
 
 
 
       DOUBLE PRECISION FUNCTION GETNEFFMAX()
       IMPLICIT NONE
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--max rapidity
 	common/rapmax2/etamax2
 	double precision etamax2
@@ -854,16 +656,16 @@ C--   local variables
       DOUBLE PRECISION FUNCTION NPART(XX1,YY1,XX2,YY2)
       IMPLICIT NONE
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--local variables
       DOUBLE PRECISION XX1,YY1,XX2,YY2,NTHICK
+      
       NPART = NTHICK(XX1,YY1)*(1.-EXP(-SIGMANN*NTHICK(XX2,YY2))) +
      &        NTHICK(XX2,YY2)*(1.-EXP(-SIGMANN*NTHICK(XX1,YY1)))
-
       END
       
 
@@ -871,19 +673,15 @@ C--local variables
       DOUBLE PRECISION FUNCTION NTHICK(X1,Y1)
       IMPLICIT NONE
 C--medium parameters
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--identifier of log file
 	common/logfile/logfid
 	integer logfid
@@ -917,19 +715,15 @@ C--nuclear thickness function
       SUBROUTINE CALCTA()
       IMPLICIT NONE
 C--medium parameters
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--   nuclear thickness function
       COMMON /THICKFNC/ RMAX,TA(100,2)
       DOUBLE PRECISION RMAX,TA
@@ -963,26 +757,23 @@ C--integrate along longitudinal line
       SUBROUTINE CALCXSECTION()
       IMPLICIT NONE
 C--medium parameters
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
+      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,NF
+      INTEGER NF
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--   geometrical cross section
       COMMON /CROSSSEC/ IMPMAX,CROSS(200,3)
       DOUBLE PRECISION IMPMAX,CROSS
 C--local variables
       INTEGER IX,IY,IB
       DOUBLE PRECISION B,P,PROD,X,Y,NTHICK,NPART,pprev
-      pprev=0.d0
+
+      pprev=0.
       DO 30 IB=1,200
        B=0.1d0*IB
        PROD=1.d0
@@ -998,403 +789,16 @@ C--local variables
        CROSS(IB,1)=B
        CROSS(IB,2)=P
        if (ib.eq.1) then
-        cross(ib,3)=0.d0
+        cross(ib,3)=0.
        else
         cross(ib,3)=cross(ib-1,3)+(p+pprev)/2.*0.1
        endif
        pprev=p
  30   CONTINUE
-      IMPMAX=19.95d0
+      IMPMAX=19.95
       END
 
-      SUBROUTINE MYMED()
-      IMPLICIT NONE
-      COMMON/LTIME/MODLTIME
-      DOUBLE PRECISION MODLTIME
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      COMMON/logfile/logfid
-      COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
-      DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
-     &SIGMANN
-      INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
-      COMMON/MEDFILEC/MEDFILE,FILELIST,NLIST,endoff
-      CHARACTER*200 MEDFILE,FILELIST
-      INTEGER NLIST
-      LOGICAL ENDOFF
-      INTEGER logfid
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
-      DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
-      CHARACTER*32000 BUFFER,LABEL*5
-      CHARACTER DUMMIE,CONTENT*100
-      DOUBLE PRECISION Y(834,834)
-      DOUBLE PRECISION X(834),tempsum,entropy
-      INTEGER I,J,K,SIGNAL,POS,II,kk,kkk,length
-      logical ltime,reached
-      double precision hightemp
-C--grid parameters
-      common/gridpar/ gdt,gdx,gxmax,gxmin,gnx,gny,gnt
-      double precision gdt,gdx,gxmax,gxmin
-      integer gnx,gny,gnt
 
-C--Reading a file with a list of names of files containing the medium evolution
-
-C--The nlist points to the current item on the list, it gets updated
-C--everytime this routine gets called.
-      if(endoff.eqv..false.) then
-C      IF(MEDFILELIST) THEN
-C      OPEN(UNIT=75,FILE=FILELIST)
-C      DO I=1,NLIST-1
-C      READ(75,*)!Dummy reading
-C      ENDDO
-C      READ(75,'(A)',iostat=signal) MEDFILE!Reading the file name
-C      if(signal.lt.0) endoff=.true.
-C      CLOSE(75)
-C      NLIST=NLIST+1!Update of nlist
-C      ENDIF
-      endif
-
-C--Now comes the process of actually dealing with the medium file
-      modltime=0.0d0
-      reached=.false.
-      tempsum=0.d0
-      BUFFER=""
-      LABEL=""
-      K=1
-
-      hightemp=0.0d0
-
-      NX=gnx
-      NY=nx
-      NT=gnt
-      DT=gdt
-      DX=gdx
-      XMAX=gxmax
-      XMIN=gxmin
-
-      write(*,*) nx,ny,nt
-      do i=1,NX
-            do j=1,NY
-                  do kk=1,NT
-                  tprofile(i,j,kk)=0.d0
-                  enddo
-            enddo
-      enddo
-
-      OPEN(10,FILE=MEDFILE,IOSTAT=SIGNAL)
-      write(*,*) "Filename= ",medfile
-
-      IF(SIGNAL>0) THEN
-      WRITE(*,*) "Something went wrong with signal: ", SIGNAL
-      WRITE(*,*) "A"
-      STOP
-      ELSE IF(SIGNAL<0) THEN
-      WRITE(*,*) "End of file reached, file is empty =/"
-      write(*,*) "1"
-      STOP
-      ENDIF
-
-163   buffer=""
-      NY=NX
-      CONTENT=""
-      READ(10,'(A32000)',IOSTAT=SIGNAL) BUFFER
-
-      if(.not.reached) ltime=.true.
-
-      IF(SIGNAL>0) THEN
-      WRITE(*,*) "Something went wrong with signal: ", SIGNAL
-      WRITE(*,*) "B"
-      STOP
-      ELSE IF(SIGNAL<0) THEN
-      go to 165
-      CLOSE(10)
-      RETURN
-      ENDIF
-
-      IF(BUFFER(1:1)=="#".or.scan(buffer,"#").gt.0) GO TO 163
-
-      CONTENT=""
-      POS=SCAN(BUFFER,' ')
-      length=50-POS
-      CONTENT=BUFFER(POS+1:50)
-      label=buffer(1:pos)
-      IF(LABEL.EQ.'NX')THEN
-        READ(CONTENT,*) NX
-        go to 163
-      ELSEIF(LABEL.EQ.'NT')THEN
-        READ(CONTENT,*) NT
-        go to 163
-      ELSEIF(LABEL.EQ.'XMAX')THEN
-        READ(CONTENT,*) XMAX
-        go to 163
-      ELSEIF(LABEL.EQ.'XMIN')THEN
-        READ(CONTENT,*) XMIN
-        go to 163
-      ELSEIF(LABEL.EQ.'TMAX')THEN
-        READ(CONTENT,*) TMAX
-        go to 163
-      ELSEIF(LABEL.EQ.'DT')THEN
-        READ(CONTENT,*) DT
-        go to 163
-      ENDIF
-
-      POS=SCAN(BUFFER,"=")
-      IF(POS.NE.0) THEN
-      BUFFER=""
-      GO TO 163
-      endif
-
-C      IF(LABEL=="tau") THEN
-C
-C      K=K+1
-C
-C      ELSE IF(LABEL.NE."0.0") THEN
-
-113   FORMAT(243ES8.2)
-      !do j=1,nx
-      !  READ(BUFFER,*) X(j)
-      !enddo
-      READ(BUFFER,*) X(1:NX)
-      Y(1,1:nx)=X(1:nx)
-      BUFFER=""
-          DO 20 I = 2,NX
-            READ(10,'(A32000)',IOSTAT=SIGNAL) BUFFER
-            READ(BUFFER,*,IOSTAT=SIGNAL) X(1:NX)
-            IF(SIGNAL>0) THEN
-            WRITE(*,*) POS
-            WRITE(*,*) BUFFER
-            WRITE(*,*) I,K
-            WRITE(*,*) "Something went wrong here with signal: ", SIGNAL
-            WRITE(*,*) "C"
-            EXIT
-            ELSE IF(SIGNAL<0) THEN
-            WRITE(*,*) BUFFER
-            WRITE(*,*) "End of file reached while getting profile =/"
-            write(*,*) "2"
-            EXIT
-            ENDIF
-              Y(I,1:nx)=X(1:nx)
-            DO II=1,NX
-            if(x(ii).lt.tc.or.k.lt.10) then
-            ltime=.false.
-            endif
-            enddo
-20        CONTINUE
-
-      FLUSH(10)
-      TPROFILE(1:nx,1:nx,K)=Y(1:nx,1:nx)
-      if(mod(k,5).eq.1) then
-      entropy=0.d0
-      tempsum=0.d0
-      do kk=1,NX
-            do kkk=1,NX
-            entropy=entropy+tprofile(kk,kkk,k)**(3.d0/4.d0)
-            tempsum=tempsum+tprofile(kk,kkk,k)
-            if (tprofile(kk,kkk,k) .gt. hightemp) then
-                  hightemp=tprofile(kk,kkk,k)
-            end if
-            !if(mod(kk,15).eq.0.and.mod(kkk,15).eq.0) then
-            !write(*,*) kk, kkk, tprofile(kk,kkk,k)
-            !endif
-            enddo
-      enddo
-      entropy=entropy/(dble(nx)**2)
-      tempsum=tempsum/(dble(nx)**2)
-      write(*,*) "k-1=",K-1
-      write(*,*) "Avg temp=",tempsum
-      write(*,*) "Entropy=",entropy
-      write(*,*) "Highest temp=",hightemp
-      hightemp=0.0d0
-      endif
-      if(k.eq.200) go to 165
-      K=K+1
-
-      if(ltime) then
-      modltime=k*dt
-      write(*,*) "LTIME= ",modltime," k= ",k,"dt= ",dt
-      nt=k
-      reached=.true.
-      signal=-1
-      endif
-
-      IF(SIGNAL==0) GO TO 163
-
-165   write(*,*) "SIGNAL= ",signal
-      if(modltime.eq.0.0d0) modltime=k*dt
-      write(*,*) "LTIME= ",modltime," k= ",k,"dt= ",dt
-      IF(SIGNAL<0) THEN
-      WRITE(*,*) "Temperature profile read succesfully :)"
-164   CLOSE(10)
-      ENDIF
-
-      END
-
-      DOUBLE PRECISION FUNCTION MEDPART(X4,Y4,Z4,T4)
-      IMPLICIT NONE
-      COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
-      DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
-     &SIGMANN
-      INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
-      DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
-      DOUBLE PRECISION X4,Y4,Z4,T4
-      DOUBLE PRECISION STEP
-      DOUBLE PRECISION TAU,INTERPOLATE
-      STEP=(XMAX-XMIN)/(NX-1)
-      TAU=SQRT(T4**2-Z4)
-      TAU=0.0d0
-      MEDPART=INTERPOLATE(X4,Y4,TAU,XMAX,XMIN,TMAX,STEP)
-      END
-
-      DOUBLE PRECISION FUNCTION INTERPOLATE(X4,Y4,T4
-     &,STEP)
-      IMPLICIT NONE
-      COMMON/MEDPARAM/CENTRMIN,CENTRMAX,BREAL,CENTR,RAU,
-     & NX,NY,NT,NF,DX,DT,XMAX,XMIN,TMAX
-      INTEGER NX,NY,NT,NF
-      DOUBLE PRECISION DX,DT,XMAX,XMIN,TMAX
-      DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
-      common/grid/tprofile(834,834,370)
-      double precision tprofile
-      double precision tempx(2,2),tempy(2,2),tempxy(2,2)
-      double precision p(4,4),a(4,4),au(4,4),ptemp
-      double precision vu(4),vt(4)
-      DOUBLE PRECISION X4,Y4,T4
-      INTEGER I,J,N,K,ii,jj,iii,jjj,bigi
-      DOUBLE PRECISION T,U,AX,BX,AY,BY,STEP,FRA
-      DOUBLE PRECISION ITEMP,FTEMP
-    
-      ITEMP=0.0d0
-      FTEMP=0.0d0
-      N=INT(MAX((XMAX-XMIN+STEP)/STEP,0.0d0))
-      AX=(X4-XMIN)/(XMAX-XMIN)
-      AY=(Y4-XMIN)/(XMAX-XMIN)
-      BX=AX*(N-1)+1
-      BY=AY*(N-1)+1
-      I=FLOOR(BX)
-      J=FLOOR(BY)
-      T=BX-I
-      U=BY-J
-
-      K=FLOOR(T4/DT)+1
-      FRA=MOD(T4,DT)
-
-      IF(I>nx.OR.J>nx.OR.K>nt.OR.I<1.OR.J<1.OR.K<1) THEN
-      INTERPOLATE=0.0d0
-      RETURN
-      ENDIF
-
-      do bigi=0,1
-      do ii=0,1
-            do jj=0,1
-                  IF(i>nx-3.OR.j>nx-3.OR.i<2.OR.j<2) THEN
-                        tempx(ii,jj)=0.d0
-                        tempy(ii,jj)=0.d0
-                        tempxy(ii,jj)=0.d0
-                  else
-                        tempx(ii+1,jj+1)=(tprofile(i+ii+1,j+jj,k+bigi)- &
-     &                  tprofile(i+ii-1,j+jj,k+bigi))/2.
-                        tempy(ii+1,jj+1)=(tprofile(i+ii,j+jj+1,k+bigi)- &
-     &                  tprofile(i+ii,j+jj-1,k))/2.
-                        tempxy(ii+1,jj+1)=(tprofile(i+ii-1,j+jj-1,k+bigi&
-     &                  )-tprofile(i+ii-1,j+jj+1,k+bigi)-               &
-     &                  tprofile(i+ii+1,j+jj-1,k+bigi)+                 &
-     &                  tprofile(i+ii+1,j+jj+1,k+bigi))/4.
-                  endif                  
-            enddo
-      enddo
-        
-      do ii=0,1
-            do jj=0,1
-      iii=1
-      jjj=1
-      p(iii+ii,jjj+jj)=tprofile(i+ii,j+jj,k+bigi)
-
-      iii=3
-      jjj=1
-      p(ii+iii,jj+jjj)=tempx(1+ii,1+jj)
-    
-      iii=1
-      jjj=3
-      p(ii+iii,jj+jjj)=tempy(1+ii,1+jj)
-    
-      iii=3
-      jjj=3
-      p(ii+iii,jj+jjj)=tempxy(1+ii,1+jj)
-            enddo
-      enddo
-
-      au(1,1)=1.d0
-      au(1,2)=0.d0
-      au(1,3)=0.d0
-      au(1,4)=0.d0
-      au(2,1)=0.d0
-      au(2,2)=0.d0
-      au(2,3)=1.d0
-      au(2,4)=0.d0
-      au(3,1)=-3.d0
-      au(3,2)=3.d0
-      au(3,3)=-2.d0
-      au(3,4)=-1.d0
-      au(4,1)=2.d0 
-      au(4,2)=-2.d0
-      au(4,3)=1.d0
-      au(4,4)=1.d0
-       
-      a=au*p*transpose(au)
-       
-      do ii=1,4
-            vu(ii)=u**(ii-1)
-            vt(ii)=t**(ii-1)
-      enddo     
-      
-      ptemp=0.0d0
-      do ii=1,4
-            do jj=1,4
-                  ptemp=ptemp+vu(ii)*a(ii,jj)*vt(jj)
-            enddo
-      enddo
-      
-      if(bigi.eq.0d0) then
-      itemp = ptemp
-      else
-      ftemp = ptemp
-      endif
-      
-      enddo
- 
-C     ITEMP=(1.0-T)*(1.0-U)*TEMP(I,J,K)+(T)*(1.0-U)*TEMP(I+1,J,K)
-C    &+(1.0-T)*(U)*TEMP(I,J+1,K)+(T)*(U)*TEMP(I+1,J+1,K)
-
-
-C     FTEMP=(1-T)*(1-U)*TEMP(I,J,K+1)+(T)*(1-U)*TEMP(I+1,J,K+1)
-C    &+(1-T)*(U)*TEMP(I,J+1,K+1)+(T)*(U)*TEMP(I+1,J+1,K+1)
-      !write(*,*) "itemp=",itemp
-      !write(*,*) "ftemp=",ftemp
-      !write(*,*) "fra=",fra
-      INTERPOLATE=ITEMP+(FTEMP-ITEMP)*FRA
-      if(interpolate.lt.0.0d0) interpolate=0.0d0
-      !write(*,*) "interpolate=",interpolate
-      
-
-      IF(INTERPOLATE.GT.1) THEN
-      !WRITE(*,*) "Interpolate: ",FTEMP, ITEMP, x4, y4, t4
-      !write(*,*) u, t, fra
-      ENDIF
-
-      END
 
       DOUBLE PRECISION FUNCTION MEDDERIV(XVAL,W)
       IMPLICIT NONE
@@ -1402,11 +806,11 @@ C    &+(1-T)*(U)*TEMP(I,J+1,K+1)+(T)*(U)*TEMP(I+1,J+1,K+1)
       INTEGER W
 C--medium parameters
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
-     &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+     &N0,SIGMANN,A,WOODSSAXON
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
      &SIGMANN
       INTEGER A
-      LOGICAL WOODSSAXON,MODMED,MEDFILELIST,DYNAMICTIME
+      LOGICAL WOODSSAXON
 C--variables for integration
       COMMON/INTEG/B,R
       DOUBLE PRECISION B,R
@@ -1417,33 +821,4 @@ C--XVAL corresponds to z-coordinate
       ELSE 
        MEDDERIV=0.D0
       ENDIF
-      END
-
-      DOUBLE PRECISION FUNCTION INTEGRATE(TPROF)
-      IMPLICIT NONE
-      DOUBLE PRECISION TPROF,XMAX,XMIN,YMAX,YMIN,STEP
-      DOUBLE PRECISION TERM
-      DOUBLE PRECISION INTERMED(100)
-      INTEGER N,I,J
-      XMAX=10.d0
-      XMIN=-10.d0
-      YMAX=10.d0
-      YMIN=-10.d0
-      N=FLOOR(MAX((XMAX-XMIN+2*STEP)/(2*STEP),0.d0))
-      INTEGRATE=0.d0
-      DO 10 I=1,N
-          TERM=0.d0
-          INTERMED(I)=0.d0
-          DO 20 J=1,N
-              TERM=(STEP/3)*(TPROF(I,J)+TPROF(I,J+2)
-     &        +4*TPROF(I,J+1))
-              INTERMED(I)=INTERMED(I)+TERM
-20        CONTINUE
-10    CONTINUE
-      TERM=0.d0
-      DO 30 I=1,N
-          TERM=(STEP/3)*(INTERMED(I)+INTERMED(I+2)
-     &    +4*INTERMED(I+1))
-          INTEGRATE=INTEGRATE+TERM
-30    CONTINUE
       END

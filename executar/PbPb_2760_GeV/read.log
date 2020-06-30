@@ -1,0 +1,247 @@
+NJOB= 1
+Medfile exists
+TI 0.53
+TAUI 0.5
+WOODSSAXON T
+MODMED T
+MEDFILE /sampa/fcanedo/IC/mymedf/PbPb_2760_GeV/0_10/1.dat
+CENTRMIN 0.
+CENTRMAX 10.
+MDSCALEFAC 0.9
+ Reading parameters from /sampa/fcanedo/jewel-2.2.0/params/PbPb_2760_GeV/read.1.dat                                          
+ ...done
+ Opening file: /sampa/fcanedo/IC/mymedf/PbPb_2760_GeV/0_10/1.dat                                                   
+ File has      4663797  lines
+ Ltime: T
+ Lifetime reached:   0.0000000000000000     
+ Ltime: F
+ Lifetime not reached:  0.50000000000000000     
+ Ltime: F
+ Lifetime not reached:  0.90000000000000002     
+ Ltime: F
+ Lifetime not reached:   1.3000000000000000     
+ Ltime: F
+ Lifetime not reached:   1.7000000000000002     
+ Ltime: F
+ Lifetime not reached:   2.1000000000000001     
+ Ltime: F
+ Lifetime not reached:   2.5000000000000000     
+ Ltime: F
+ Lifetime not reached:   2.9000000000000004     
+ Ltime: F
+ Lifetime not reached:   3.3000000000000003     
+ Ltime: F
+ Lifetime not reached:   3.7000000000000002     
+ Ltime: F
+ Lifetime not reached:   4.0999999999999996     
+ Ltime: F
+ Lifetime not reached:   4.5000000000000000     
+ Ltime: F
+ Lifetime not reached:   4.9000000000000004     
+ Ltime: F
+ Lifetime not reached:   5.3000000000000007     
+ Ltime: F
+ Lifetime not reached:   5.7000000000000002     
+ Ltime: F
+ Lifetime not reached:   6.1000000000000005     
+ Ltime: F
+ Lifetime not reached:   6.5000000000000000     
+ Ltime: F
+ Lifetime not reached:   6.9000000000000004     
+ Ltime: F
+ Lifetime not reached:   7.3000000000000007     
+ Ltime: F
+ Lifetime not reached:   7.7000000000000002     
+ Ltime: F
+ Lifetime not reached:   8.1000000000000014     
+ Ltime: F
+ Lifetime not reached:   8.5000000000000000     
+ Ltime: F
+ Lifetime not reached:   8.9000000000000004     
+ Ltime: F
+ Lifetime not reached:   9.3000000000000007     
+ Ltime: F
+ Lifetime not reached:   9.7000000000000011     
+ Ltime: F
+ Lifetime not reached:   10.100000000000001     
+ Ltime: F
+ Lifetime not reached:   10.500000000000000     
+ Ltime: F
+ Lifetime not reached:   10.900000000000000     
+ Ltime: F
+ Lifetime not reached:   11.300000000000001     
+ Ltime: F
+ Lifetime not reached:   11.700000000000001     
+ Ltime: F
+ Lifetime not reached:   12.100000000000001     
+ Ltime: F
+ Lifetime not reached:   12.500000000000000     
+ Ltime: F
+ Lifetime not reached:   12.900000000000000     
+ Ltime: F
+ Lifetime not reached:   13.300000000000001     
+ Ltime: F
+ Lifetime not reached:   13.700000000000001     
+ Ltime: F
+ Lifetime not reached:   14.100000000000001     
+ Ltime: F
+ Lifetime not reached:   14.500000000000000     
+ Ltime: F
+ Lifetime not reached:   14.900000000000000     
+ Ltime: F
+ Lifetime not reached:   15.300000000000001     
+ Ltime: F
+ Lifetime not reached:   15.700000000000001     
+ Ltime: F
+ Lifetime not reached:   16.100000000000001     
+ Ltime: F
+ Lifetime not reached:   16.500000000000000     
+ Ltime: F
+ Lifetime not reached:   16.900000000000002     
+ Ltime: F
+ Lifetime not reached:   17.300000000000001     
+ Ltime: F
+ Lifetime not reached:   17.699999999999999     
+ Ltime: F
+ Lifetime not reached:   18.100000000000001     
+ Ltime: F
+ Lifetime not reached:   18.500000000000000     
+ Ltime: F
+ Lifetime not reached:   18.900000000000002     
+ Ltime: F
+ Lifetime not reached:   19.300000000000001     
+ Ltime: T
+ Lifetime reached:   19.700000000000003     
+ Ltime: T
+ Lifetime reached:   20.100000000000001     
+ Ltime: T
+ Lifetime reached:   20.500000000000000     
+ Ltime: T
+ Lifetime reached:   20.900000000000002     
+ Ltime: T
+ Lifetime reached:   21.300000000000001     
+ Ltime: T
+ Lifetime reached:   21.700000000000003     
+ Ltime: T
+ Lifetime reached:   22.100000000000001     
+ Ltime: T
+ Lifetime reached:   22.500000000000000     
+ Ltime: T
+ Lifetime reached:   22.900000000000002     
+ Ltime: T
+ Lifetime reached:   23.300000000000001     
+ Ltime: T
+ Lifetime reached:   23.700000000000003     
+ LTIME=    19.700000000000003     
+ Highest temp=  0.57812893089954109     
+ Temperature profile read succesfully :)
+ /sampa/fcanedo/lhapdf/share/lhapdf/PDFsets/EPS09LOR_208.LHgrid
+
+ Initial vertex:   -4.9519807923169274        3.4513805522208862     
+
+ Medium lifetime:   218.70601369463594     
+ Medium lifetime whithout eta:   19.665153885473110     
+ done with event number            1
+
+ Initial vertex:   -1.8907563025210088        1.1104441776710665     
+
+ Medium lifetime:   218.70601369463594     
+ Medium lifetime whithout eta:   19.665153885473110     
+ done with event number            2
+
+ Initial vertex:   -4.6518607442977178       -1.5906362545018027     
+
+ Medium lifetime:   218.70601369463594     
+ Medium lifetime whithout eta:   19.665153885473110     
+ done with event number            1
+
+ Initial vertex:  -0.15006002400960483       -3.8115246098439393     
+
+ Medium lifetime:   218.70601369463594     
+ Medium lifetime whithout eta:   19.665153885473110     
+ done with event number            2
+
+ Initial vertex:  -0.75030012004802060       -4.8919567827130841     
+
+ Medium lifetime:   218.70601369463594     
+ Medium lifetime whithout eta:   19.665153885473110     
+ done with event number            3
+
+ Initial vertex:   -1.8307322929171690        3.0012004801921677E-002
+
+ Medium lifetime:   218.70601369463594     
+ Medium lifetime whithout eta:   19.665153885473110     
+ done with event number            1
+
+ Initial vertex:    1.5306122448979593       -2.6110444177671077     
+
+ Medium lifetime:   218.70601369463594     
+ Medium lifetime whithout eta:   19.665153885473110     
+ done with event number            2
+
+ Initial vertex:    4.3517406962785117        2.6110444177671077     
+
+ Medium lifetime:   218.70601369463594     
+ Medium lifetime whithout eta:   19.665153885473110     
+ done with event number            3
+ mean number of effective scatterings:   233.86181345580843     
+ mean number of splittings:   7.9844923973582755     
+
+Rivet 2.6.0 running on machine sampaui (x86_64) at 2020-05-25 23:20:27
+Rivet.Analysis.Handler: WARN  Analysis 'JET_SHAPE' is unvalidated: be careful, it may be broken!
+Reading events from '/sampa/fcanedo/jewel-2.2.0/hepmc/PbPb_2760_GeV/cent0_10/read.1.hepmc'
+#--------------------------------------------------------------------------
+#                         FastJet release 3.2.1
+#                 M. Cacciari, G.P. Salam and G. Soyez                  
+#     A software package for jet finding and analysis at colliders      
+#                           http://fastjet.fr                           
+#	                                                                      
+# Please cite EPJC72(2012)1896 [arXiv:1111.6097] if you use this package
+# for scientific work and optionally PLB641(2006)57 [hep-ph/0512210].   
+#                                                                       
+# FastJet is provided without warranty under the terms of the GNU GPLv2.
+# It uses T. Chan's closest pair algorithm, S. Fortune's Voronoi code,
+# CGAL and 3rd party plugin jet algorithms. See COPYING file for details.
+#--------------------------------------------------------------------------
+Finished event loop at 2020-05-25 23:20:27
+Cross-section = 2.709380e+08 pb
+
+Rivet.Analysis.Handler: INFO  Finalising analyses
+1.66545e-07
+2.56241e-09
+Rivet.Analysis.Handler: INFO  Processed 8 events
+
+The MCnet usage guidelines apply to Rivet: see http://www.montecarlonet.org/GUIDELINES
+Please acknowledge plots made with Rivet analyses, and cite arXiv:1003.0694 (http://arxiv.org/abs/1003.0694)
+Rivet run completed at 2020-05-25 23:20:27, time elapsed = 0:00:00
+Histograms written to /sampa/fcanedo/results/histograms/PbPb_2760_GeV/cent0_10/read/shape.read.1.yoda
+
+
+Rivet 2.6.0 running on machine sampaui (x86_64) at 2020-05-25 23:20:30
+Rivet.Analysis.Handler: WARN  Analysis 'JET_VN' is unvalidated: be careful, it may be broken!
+Reading events from '/sampa/fcanedo/jewel-2.2.0/hepmc/PbPb_2760_GeV/cent0_10/read.1.hepmc'
+#--------------------------------------------------------------------------
+#                         FastJet release 3.2.1
+#                 M. Cacciari, G.P. Salam and G. Soyez                  
+#     A software package for jet finding and analysis at colliders      
+#                           http://fastjet.fr                           
+#	                                                                      
+# Please cite EPJC72(2012)1896 [arXiv:1111.6097] if you use this package
+# for scientific work and optionally PLB641(2006)57 [hep-ph/0512210].   
+#                                                                       
+# FastJet is provided without warranty under the terms of the GNU GPLv2.
+# It uses T. Chan's closest pair algorithm, S. Fortune's Voronoi code,
+# CGAL and 3rd party plugin jet algorithms. See COPYING file for details.
+#--------------------------------------------------------------------------
+Finished event loop at 2020-05-25 23:20:31
+Cross-section = 2.709380e+08 pb
+
+Rivet.Analysis.Handler: INFO  Finalising analyses
+Rivet.Analysis.Handler: INFO  Processed 8 events
+
+The MCnet usage guidelines apply to Rivet: see http://www.montecarlonet.org/GUIDELINES
+Please acknowledge plots made with Rivet analyses, and cite arXiv:1003.0694 (http://arxiv.org/abs/1003.0694)
+Rivet run completed at 2020-05-25 23:20:31, time elapsed = 0:00:01
+Histograms written to /sampa/fcanedo/results/histograms/PbPb_2760_GeV/cent0_10/read/vn.read.1.yoda
+
+

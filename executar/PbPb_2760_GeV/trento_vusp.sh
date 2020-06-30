@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #Number of the job in question
-export NJOB=1
+export NJOB=5
 echo "NJOB= "$NJOB
 
 #exporting enviroment variables necessary for the run
-export FileDir="/sampa/fcanedo/IC/vusphydro/trento/PbPb_2760_GeV"
+export FileDir="/sampa/fcanedo/IC/vusphydro/trento/PbPb_2760_GeV/profiles"
 export MacroDir="/sampa/fcanedo/jewel-2.2.0"
 export LD_LIBRARY_PATH="/sampa/fcanedo/lhapdf/lib"
 export LHAPATH="/sampa/fcanedo/lhapdf/share/lhapdf/PDFsets"
@@ -13,6 +13,7 @@ export RIVET_ANALYSIS_PATH="/sampa/fcanedo/rivetanalises"
 export HEPMC_FILE="/sampa/fcanedo/jewel-2.2.0/hepmc/PbPb_2760_GeV/cent0_10/trento_vusp."$NJOB".hepmc"
 export YODA_GENERIC_FILE="/sampa/fcanedo/results/histograms/PbPb_2760_GeV/cent0_10/trento_vusp/trento_vusp."$NJOB".yoda"
 export YODA_SHAPE_FILE="/sampa/fcanedo/results/histograms/PbPb_2760_GeV/cent0_10/shape_trento_vusp/shape.trento_vusp."$NJOB".yoda"
+export YODA_VN_FILE="/sampa/fcanedo/results/histograms/PbPb_2760_GeV/cent0_10/vn_trento_vusp/vn.trento_vusp."$NJOB".yoda"
 export YODA_ZHADRON_FILE="/sampa/fcanedo/results/histograms/PbPb_2760_GeV/cent0_10/z_hadron/trento_vusp."$NJOB".yoda"
 
 chmod 777 $MacroDir/jewel-2.2.0-simple
@@ -26,6 +27,8 @@ eval `alienv printenv VO_ALICE@HepMC::v2.06.09-13`
 eval `alienv printenv VO_ALICE@fastjet::v3.2.1_1.024-alice3-1`                  
 eval `alienv printenv VO_ALICE@YODA::v1.7.0-1`                                  
 eval `alienv printenv VO_ALICE@Rivet::2.6.0-alice1-1`                           
+
+if true ; then
 
 #Number used for the name of the medium file, not necessary for my trento version
 #export MED_FILE_NUMBER=`cat $FileDir/filelist.txt | head -n $NJOB | tail -n 1`
@@ -53,15 +56,28 @@ sed -i "s/\(NJOB\s\).*/\1"$NJOB"/g" trento_vusp."$NJOB".dat
 sed -i "s/\(LOGFILE\s.*trento_vusp\.\).*/\1"$NJOB".log/g" trento_vusp."$NJOB".dat
 sed -i "s/\(HEPMCFILE\s.*trento_vusp\.\).*/\1"$NJOB".hepmc/g" trento_vusp."$NJOB".dat
 sed -i "s/\(MEDIUMPARAMS\s.*trento_vusp\.\).*/\1"$NJOB".dat/g" trento_vusp."$NJOB".dat
+sed -i "s/\(XSECFILE \s.*trento_vusp_\).*/\1"$NJOB".dat/g" trento_vusp."$NJOB".dat
+sed -i "s/\(SPLITINTFILE\s.*trento_vusp_\).*/\1"$NJOB".dat/g" trento_vusp."$NJOB".dat
+sed -i "s/\(PDFFILE\s.*trento_vusp_\).*/\1"$NJOB".dat/g" trento_vusp."$NJOB".dat
 
 cd $MacroDir/medparams/PbPb_2760_GeV/
 cp trento_vusp.dat trento_vusp."$NJOB".dat
 
 sed -i "s/\(MEDFILE\s.*\/\)[0-9]*\(\.dat\)/\1"$NJOB"\2/g" trento_vusp."$NJOB".dat
 
+cd $MacroDir/integrals
+cp xsecs.dat xsecs_trento_vusp_$NJOB".dat"
+cp splitint.dat splitint_trento_vusp_$NJOB".dat"
+cp pdfs.dat pdfs_trento_vusp_$NJOB".dat"
+
 #Executing JEWEL
 cd $MacroDir
-#$MacroDir/jewel-2.2.0-simple $MacroDir/params/PbPb_2760_GeV/trento_vusp."$NJOB".dat
+$MacroDir/jewel-2.2.0-reader $MacroDir/params/PbPb_2760_GeV/trento_vusp."$NJOB".dat
+
+cd $MacroDir/integrals
+rm xsecs_trento_vusp_$NJOB".dat"
+rm splitint_trento_vusp_$NJOB".dat"
+rm pdfs_trento_vusp_$NJOB".dat"
 
 #Cleaning the specific parameter files
 cd $MacroDir/params/PbPb_2760_GeV/
@@ -76,15 +92,20 @@ echo ""
 xz "$FileDir"/"$NJOB".dat
 fi
 
-
+fi
 
 #let line=($NJOB%100+1)
-export PSI=`cat /sampa/fcanedo/IC/vusphydro/trento/PbPb_2760_GeV/vns.dat | head -n $NJOB | tail -n 1 | sed "s/\s\{1,\}/ /g" | cut -d ' ' -f 4`
+line=`cat /sampa/fcanedo/IC/vusphydro/trento/lineList.dat | head -n $NJOB | tail -n 1`
+export PSI2=`cat /sampa/fcanedo/IC/vusphydro/trento/PbPb_2760_GeV/int_chgv1_pt0.2-3.dat | head -n $line | tail -n 1 | sed "s/\s\{1,\}/ /g" | cut -d ' ' -f 5`
+export PSI3=`cat /sampa/fcanedo/IC/vusphydro/trento/PbPb_2760_GeV/int_chgv1_pt0.2-3.dat | head -n $line | tail -n 1 | sed "s/\s\{1,\}/ /g" | cut -d ' ' -f 7`
+export PSI4=`cat /sampa/fcanedo/IC/vusphydro/trento/PbPb_2760_GeV/int_chgv1_pt0.2-3.dat | head -n $line | tail -n 1 | sed "s/\s\{1,\}/ /g" | cut -d ' ' -f 9`
+export PSI=$PSI2
 echo $PSI
 
 #Executing the analysis of the events
 #rivet -a MC_GENERIC --ignore-beams -H $YODA_GENERIC_FILE $HEPMC_FILE
 echo $YODA_SHAPE_FILE
 echo $HEPMC_FILE
-#rivet  -a JET_SHAPE --ignore-beams -H $YODA_SHAPE_FILE $HEPMC_FILE
+rivet  -a JET_SHAPE --ignore-beams -H $YODA_SHAPE_FILE $HEPMC_FILE
+rivet  -a JET_VN --ignore-beams -H $YODA_VN_FILE $HEPMC_FILE
 #rivet -a Z_HADRON --ignore-beams -H $YODA_ZHADRON_FILE $HEPMC_FILE

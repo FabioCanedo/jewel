@@ -239,6 +239,7 @@ C--event loop
 	    write(logfid,*)
  101	  continue
 	endif
+
  
 C--finish
 	WRITE(HPMCFID,'(A)')'HepMC::IO_GenEvent-END_EVENT_LISTING'
@@ -251,6 +252,10 @@ C--finish
 	write(logfid,*)'mean number of effective scatterings:',
      &      NSCATEFF/(SUMOFWEIGHTSTOT-WDISCTOT)
 	write(logfid,*)'mean number of splittings:',
+     &      NSPLIT/(SUMOFWEIGHTSTOT-WDISCTOT)
+	write(*,*)'mean number of effective scatterings:',
+     &      NSCATEFF/(SUMOFWEIGHTSTOT-WDISCTOT)
+	write(*,*)'mean number of splittings:',
      &      NSPLIT/(SUMOFWEIGHTSTOT-WDISCTOT)
 	write(logfid,*)
 	write(logfid,*)'number of extrapolations in splitting integral: ',
@@ -415,6 +420,7 @@ C--Variables local to this program
 	LOGICAL PDFEXIST,SPLITIEXIST,XSECEXIST
 
 	data maxnscatcen/10000/
+
 
       HPMCFID = 4
 	logfid = 3
@@ -1086,6 +1092,7 @@ C--Variables local to this program
 
 
        CALL MEDNEXTEVT
+
 
 C--initialisation with matrix element	 
 C--production vertex
@@ -3581,6 +3588,7 @@ C--local variables
 	INTEGER LINE
 	DOUBLE PRECISION UP,LOW,CCOL,SIGMATOT,GETSSCAT,GETXSECINT,
      &SCATPRIMFUNC,MS1,MD1,shat,pcms2,avmom(5),x,y,z,t,getmd
+      double precision getmdmin,getmdmax
 	
 	md1 = getmd(x,y,z,t)
 	call avscatcen(x,y,z,t,
@@ -3626,6 +3634,12 @@ C--probability for no initial state radiation
        write(*,*)'error: P_norad=',GETPNORAD1,
      &	P(LINE,4),P(LINE,5),P(LINE,1),P(LINE,2),P(LINE,3),LOW,UP,
      &K(LINE,2),MD1
+       write(*,*) "Position:",x,y,t,z,sqrt(t**2-z**2)
+       write(*,*) "MS=",ms1
+       write(*,*) "MD=",md1
+       write(*,*) "MDMIN=",getmdmin()
+       write(*,*) "MDMAX=",getmdmax()
+       write(*,*) "LQCD=",lqcd
 	ENDIF
 	END
 

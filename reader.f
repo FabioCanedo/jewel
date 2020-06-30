@@ -18,17 +18,25 @@ C++                                                            ++
       double precision timesteps(60)
       double precision tprofile(np,np,60)
       double precision t,x,y,temp
-      
+      integer linecounter
+
       open(unit=1,file=filename,iostat=ios)
+      write(*,*) "Opening file: ",filename
       
-      timesteps(1)=0.d0
+      do k=2,60
+      timesteps(k)=1.d20
+      end do
       k=1
+      timesteps(k)=0.d0
 
+      linecounter=0
       do while (ios.eq.0)
-
+      
       read(1,*,iostat=ios) t,x,y,temp
       i=geti(x,np)
       j=geti(y,np)
+
+      linecounter=linecounter+1
 
       if(t.ne.timesteps(k)) then
       k=k+1
@@ -39,6 +47,8 @@ C++                                                            ++
 
       end do
       
+      write(*,*) "File has ",linecounter, " lines"
+
       end subroutine
 
       integer function geti(x,np)
@@ -46,20 +56,22 @@ C++                                                            ++
       integer np
       double precision x,xmin,xmax,dx
       
+      xmax=25.d0
+      xmin=-25.d0
       dx=(xmax-xmin)/(np-1)
       geti=1+(x-xmin)/dx
       end function
 
       integer function getk(t,timesteps)
       implicit none
-      integer getk,k
+      integer k
       double precision t
       double precision timesteps(60)
       t=0.d0
-      getk=60
+      getk=1
       do k=1,60
 
-      if(timesteps(k).ge.t) then
+      if(timesteps(k).le.t) then
       getk=k
       endif
 
@@ -76,11 +88,15 @@ C++                                                            ++
       double precision xmax,xmin,dx,dt
       double precision t,x,y,xa,ya
       double precision f(2)
-      double precision interpol,bicubic
+      double precision bicubic
       integer getk
 
       k=getk(t,timesteps)
+      if(timesteps(k).eq.0.d0.and.timesteps(k+1).eq.0.d0) then
+      dt=1e30
+      else
       dt=timesteps(k+1)-timesteps(k)
+      end if
       
       xmax=25.d0
       xmin=-25.d0
@@ -92,6 +108,7 @@ C++                                                            ++
       ya=mod(y-xmin,dx)
 
       do kk=1,2
+      !write(*,*) "k:",k-1+kk
       do ii=1,4
             do jj=1,4
                   iii=i+ii-2
@@ -100,17 +117,37 @@ C++                                                            ++
                         igrid(ii,jj)=0.d0
                   else if (jjj.gt.np.or.jjj.lt.1) then
                         igrid(ii,jj)=0.d0
+                  else if (k-1+kk.gt.59.or.k-1+kk.lt.1) then
+                        igrid(ii,jj)=0.d0
                   else
                         igrid(ii,jj)=tgrid(iii,jjj,k-1+kk)
                   end if
-                  xgrid(ii,jj)=xmin+(ii-1)*dx
-                  ygrid(ii,jj)=xmin+(jj-1)*dx
+                  xgrid(ii,jj)=xa+(ii-1)*dx
+                  ygrid(ii,jj)=ya+(jj-1)*dx
             enddo
       enddo
 
+      !write(*,*) "Calling bicubic with parameters:"
+      !write(*,*) xa,ya,dx,xmin,xmax
+      !write(*,*) "Temperature grid"
+      !write(*,*) igrid(1,:)
+      !write(*,*) igrid(2,:)
+      !write(*,*) igrid(3,:)
+      !write(*,*) igrid(4,:)
+      !write(*,*) "X grid"
+      !write(*,*) xgrid(1,:)
+      !write(*,*) xgrid(2,:)
+      !write(*,*) xgrid(3,:)
+      !write(*,*) xgrid(4,:)
+      !write(*,*) "Y grid"
+      !write(*,*) ygrid(1,:)
+      !write(*,*) ygrid(2,:)
+      !write(*,*) ygrid(3,:)
+      !write(*,*) ygrid(4,:)
       f(kk)=bicubic(xa,ya,dx,xmin,xmax,igrid,xgrid,ygrid)
       enddo
 
+      !write(*,*) "Interpol=",interpol
       interpol=f(1)+(t-timesteps(k))*(f(2)-f(1))/dt
       end function
       

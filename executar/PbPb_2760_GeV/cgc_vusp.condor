@@ -1,0 +1,7 @@
+executable = cgc_vusp.sh
+getenv=True
+arguments = $(Process)
+log = /sampa/fcanedo/log/cgc_vusp.$(Process).log
+stdout = /sampa/fcanedo/out/cgc_vusp.$(Process).out
+stderr = /sampa/fcanedo/err/cgc_vusp.$(Process).err
+queue 1069

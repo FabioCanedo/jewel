@@ -1,0 +1,7 @@
+executable = read.sh
+getenv=True
+arguments = $(Process)
+log = /sampa/fcanedo/log/read.$(Process).log
+stdout = /sampa/fcanedo/out/read.$(Process).out
+stderr = /sampa/fcanedo/err/read.$(Process).err
+queue 1000

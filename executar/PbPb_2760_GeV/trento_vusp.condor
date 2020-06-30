@@ -1,0 +1,7 @@
+executable = trento_vusp.sh
+getenv=True
+arguments = $(Process)
+log = /sampa/fcanedo/log/trento_vusp.$(Process).log
+stdout = /sampa/fcanedo/out/trento_vusp.$(Process).out
+stderr = /sampa/fcanedo/err/trento_vusp.$(Process).err
+queue 756
