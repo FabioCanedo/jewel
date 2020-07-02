@@ -1,0 +1,8 @@
+executable = read0_10.sh
+universe=vanilla
+getenv=True
+arguments = $(Process)
+log = /sampa/fcanedo/log/exec.5.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.$(Process).err
+queue 1000

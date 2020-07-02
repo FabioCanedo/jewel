@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Number of the job in question
-export NJOB=1000
+export NJOB=$(($1+1))
 echo "NJOB= "$NJOB
 
 #exporting eviroment variables necessary for the run
@@ -21,11 +21,12 @@ chmod 777 $MacroDir/jewel-2.2.0-simple
 source /cvmfs/alice.cern.ch/etc/login.sh
 
 eval `alienv printenv VO_ALICE@GSL::v1.16-25`                                   
-eval `alienv printenv VO_ALICE@boost::v1.59.0-21`                               
-eval `alienv printenv VO_ALICE@HepMC::v2.06.09-13`                              
-eval `alienv printenv VO_ALICE@fastjet::v3.2.1_1.024-alice3-1`                  
-eval `alienv printenv VO_ALICE@YODA::v1.7.0-1`                                  
-eval `alienv printenv VO_ALICE@Rivet::2.6.0-alice1-1`                           
+#eval `alienv printenv VO_ALICE@boost::v1.59.0-21`                               
+#eval `alienv printenv VO_ALICE@HepMC::v2.06.09-13`                              
+#eval `alienv printenv VO_ALICE@fastjet::v3.2.1_1.024-alice3-1`                  
+#eval `alienv printenv VO_ALICE@YODA::v1.7.0-1`                                  
+#eval `alienv printenv VO_ALICE@Rivet::2.6.0-alice1-1`                           
+eval `alienv printenv VO_ALICE@Rivet::2.7.2-alice2-1`                           
 
 export MED_FILE_NUMBER=$NJOB
 
@@ -52,13 +53,18 @@ sed -i "s/\(PDFFILE\s.*read_\).*/\1"$NJOB".dat/g" read0_10."$NJOB".dat
 cd $MacroDir/medparams/PbPb_5020_GeV/
 cp read0_10.dat read0_10."$NJOB".dat
 
+B=`cat impactPar.dat | head -n $NJOB | tail -n 1`
+echo $B
+
 sed -i "s/\(MEDFILE\s.*\/\)[0-9]\{1,\}\(\.dat\)/\1"$MED_FILE_NUMBER"\2/g" read0_10."$NJOB".dat
+sed -i "s/\(MDSCALEFAC\s\).*/\10.9d0/g" read."$NJOB".dat
+sed -i "s/\(BREAL\s\).*/\1$B/g" read."$NJOB".dat
 #cat read.$NJOB.dat
 
-cd $MacroDir/integrals
-cp xsecs.dat xsecs_read0_10_$NJOB".dat"
-cp splitint.dat splitint_read0_10_$NJOB".dat"
-cp pdfs.dat pdfs_read0_10_$NJOB".dat"
+#cd $MacroDir/integrals
+#cp xsecs.dat xsecs_read0_10_$NJOB".dat"
+#cp splitint.dat splitint_read0_10_$NJOB".dat"
+#cp pdfs.dat pdfs_read0_10_$NJOB".dat"
 
 cd $MacroDir
 $MacroDir/jewel-2.2.0-reader $MacroDir/params/PbPb_5020_GeV/read0_10."$NJOB".dat

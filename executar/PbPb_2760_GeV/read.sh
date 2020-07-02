@@ -54,8 +54,12 @@ sed -i "s/\(PDFFILE\s.*read_\).*/\1"$NJOB".dat/g" read."$NJOB".dat
 cd $MacroDir/medparams/PbPb_2760_GeV/
 cp read.dat read."$NJOB".dat
 
+B=`cat impactPar.dat | head -n $NJOB | tail -n 1`
+echo $B
+
 sed -i "s/\(MEDFILE\s.*\/\)[0-9]\{1,\}\(\.dat\)/\1"$MED_FILE_NUMBER"\2/g" read."$NJOB".dat
 sed -i "s/\(MDSCALEFAC\s\).*/\10.9d0/g" read."$NJOB".dat
+sed -i "s/\(BREAL\s\).*/\1$B/g" read."$NJOB".dat
 cat read.$NJOB.dat
 
 #cd $MacroDir/integrals
@@ -88,6 +92,8 @@ export PSI=0.0
 export PSI2=0.0
 export PSI3=0.0
 export PSI4=0.0
+
+echo $PYTHONPATH
 
 #rivet -a MC_GENERIC --ignore-beams -H $YODA_GENERIC_FILE $HEPMC_FILE
 rivet  -a JET_SHAPE --ignore-beams -H $YODA_SHAPE_FILE $HEPMC_FILE

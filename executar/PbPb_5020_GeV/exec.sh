@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Number of the job in question
-export NJOB=$1
+export NJOB=$(($1+1))
 echo "NJOB= "$NJOB
 
 #exporting eviroment variables necessary for the run

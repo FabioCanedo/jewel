@@ -141,6 +141,7 @@ C--default settings
 	MDSCALEFAC=0.9d0
       tempfac=1.0d0
 	boost = .true.
+      breal=0.d0
 
 C--read settings from file
 	write(logfid,*)
@@ -184,6 +185,8 @@ C--read settings from file
             READ(BUFFER,*,IOSTAT=IOS) MDFACTOR
           ELSE IF (LABEL=="MDSCALEFAC") THEN
             READ(BUFFER,*,IOSTAT=IOS) MDSCALEFAC
+          ELSE IF (LABEL=="BREAL") THEN
+            READ(BUFFER,*,IOSTAT=IOS) breal
 	     else
        write(logfid,*)'unknown label ',label
 	     endif
@@ -217,6 +220,7 @@ C--read settings from file
       write(logfid,*)'SIGMANN     =',SIGMANN
       write(logfid,*)'MDFACTOR    =',MDFACTOR
       write(logfid,*)'MDSCALEFAC  =',MDSCALEFAC
+      write(logfid,*)'BREAL       =',breal
       write(logfid,*)
       write(logfid,*)
       write(logfid,*)
@@ -256,6 +260,7 @@ C--local variables
       DOUBLE PRECISION PYR,R,b1,b2,gettemp
 
 C--pick an impact parameter
+      if(.not. modmed) then
       r=(pyr(0)*(centrmax-centrmin)+centrmin)/100.
       i=0
       do 130 j=1,200
@@ -274,6 +279,7 @@ C--pick an impact parameter
       !write(*,*) "Parâmetro de impacto = ",breal
       centr = r;
       
+      end if
 
       !IF(MODMED) THEN
       !write(*,*) "Reading medium"
@@ -324,7 +330,7 @@ C--local variables
       double precision s,gettemp
       logical myprob
 
-      myprob=.true.
+      myprob=.false.
       !tempmaximum=0.d0
         
       IF(myprob) THEN
@@ -753,11 +759,12 @@ C--max rapidity
 	double precision etamax2
 C--function call
       DOUBLE PRECISION GETTEMPMAX
-      if(medfilelist.eqv..false.) then
+      !if(medfilelist.eqv..false.) then
+      if(.false.) then
 	  GETLTIMEMAX=TAUI*(GETTEMPMAX()/TC)**3*cosh(etamax2)
       else
       !Fabio: Putting my LTIME
-      write(*,*) "Lifetime whithout boost:",modltime
+      !write(*,*) "Lifetime whithout boost:",modltime
       GETLTIMEMAX=MODLTIME*cosh(etamax2)
       endif
 	 END
