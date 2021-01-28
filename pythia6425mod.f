@@ -80213,6 +80213,8 @@ C--event weight exponent
 C...Read out p_T^2
       PT2=VINT(48)
       WTXS=PT2**(WEIGHTEX/2.d0)
+      if(wtxs.lt.8.236e-6.and.wtxs.gt.8.235e-6) then
+      endif
       RETURN
       END
  

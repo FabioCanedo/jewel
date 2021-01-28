@@ -330,7 +330,7 @@ C--local variables
       double precision s,gettemp
       logical myprob
 
-      myprob=.false.
+      myprob=.true.
       !tempmaximum=0.d0
         
       IF(myprob) THEN
@@ -350,8 +350,10 @@ C--local variables
               yval=-25.d0+(j-1)*(50.d0/833.d0)
               rval=(xval**2+yval**2)**(0.5d0)
               if(rval.gt.1.12d0*(208.0d0**(0.333))) then
+                    write(*,*) 'Too far from the center'
               go to 100
               elseif(gettemp(xval,yval,0.0d0,taui).lt.1.0d0*tc) then
+                    write(*,*) 'Too cold'
               go to 100
               endif
               !write(*,*) "xvtx=",xval," yvtx=",yval
@@ -360,6 +362,7 @@ C--local variables
               return
             endif
       enddo
+
 
 
       ELSE
@@ -422,6 +425,8 @@ C--identifier of log file
 	integer logfid
 C--local variables
       DOUBLE PRECISION X,Y,Z,T,MS,PX,PY,PZ,E,MD,TEMP
+      double precision u,ux,uy,px2,py2,px3,py3,e3
+      double precision getux,getuy,eta
       INTEGER TYPE
       DOUBLE PRECISION R,PYR,pmax,wt,tau,theta,phi,pi,p,ys,pz2,e2
       DATA PI/3.141592653589793d0/
@@ -475,7 +480,53 @@ C--local variables
 	pz2 = p*cos(theta)
 	E   = cosh(ys)*E2 + sinh(ys)*pz2
 	pz  = sinh(ys)*E2 + cosh(ys)*pz2
+
+      ux=getux(x,y,z,t)
+      uy=getuy(x,y,z,t)
+      u=sqrt(ux**2+uy**2)
+      if(ux.ne.0.d0) then
+            theta=atan(uy/ux)
+      else
+            if(uy.gt.0.d0) then
+                  theta=pi/2.d0
+            else
+                  theta=-pi/2.d0
+            end if
+      end if
+      eta=0.5d0*log((1.d0+u)/(1.d0-u))
+
+      px2=px*cos(-theta)-py*sin(-theta)
+      py2=px*sin(-theta)+py*cos(-theta)
+      E2=E
+
+      px3=px2*cosh(eta)-E2*sinh(eta)
+      py3=py2
+      E3=E2*cosh(eta)-px2*sinh(eta)
+      
+      px=px3*cos(theta)-py3*sin(theta)
+      py=px3*sin(theta)+py3*cos(theta)
+      E=E3
+
       END
+
+
+
+      double precision function getux(x,y,z,t)
+            implicit none
+            double precision x,y,z,t
+            getux=0.d0
+            return
+      end function
+
+
+
+      double precision function getuy(x,y,z,t)
+            implicit none
+            double precision x,y,z,t
+            getuy=0.d0
+            return
+      end function
+
 
 
       SUBROUTINE AVSCATCEN(X,Y,Z,T,PX,PY,PZ,E,m)

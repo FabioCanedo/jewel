@@ -1,8 +1,486 @@
 executable = exec.sh
 universe=vanilla
 getenv=True
-arguments = $(Process)
-log = /sampa/fcanedo/log/exec.5.$(Process).log
-stdout = /sampa/fcanedo/out/exec.5.$(Process).out
-stderr = /sampa/fcanedo/err/exec.5.$(Process).err
-queue 1000
+arguments = $(Process) 10000 5020 0.90 0 10 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 10 20 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 20 30 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 30 40 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 40 50 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 50 60 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 0 10 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 10 20 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 20 30 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 30 40 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 40 50 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 50 60 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 0 10 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 10 20 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 20 30 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 30 40 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 40 50 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 0.90 50 60 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 0 10 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 10 20 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 20 30 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 30 40 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 40 50 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 50 60 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 0 10 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 10 20 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 20 30 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 30 40 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 40 50 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 50 60 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 0 10 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 10 20 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 20 30 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 30 40 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 40 50 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.00 50 60 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 0 10 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 10 20 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 20 30 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 30 40 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 40 50 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 50 60 0.17 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 0 10 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 10 20 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 20 30 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 30 40 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 40 50 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 50 60 0.16 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 0 10 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 10 20 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 20 30 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 30 40 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 40 50 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+
+executable = exec.sh
+universe=vanilla
+getenv=True
+arguments = $(Process) 10000 5020 1.10 50 60 0.15 9
+log = /sampa/fcanedo/log/exec.5.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.5.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.5.0_10.$(Process).err
+queue 50
+

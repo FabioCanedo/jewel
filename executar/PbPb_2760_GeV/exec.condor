@@ -1,8 +1,8 @@
 executable = exec.sh
 universe=vanilla
 getenv=True
-arguments = $(Process)
-log = /sampa/fcanedo/log/exec.$(Process).log
-stdout = /sampa/fcanedo/out/exec.$(Process).out
-stderr = /sampa/fcanedo/err/exec.$(Process).err
+arguments = $(Process) 1000 2760 0.90 0 10 0.17 1
+log = /sampa/fcanedo/log/exec.2.0_10.$(Process).log
+stdout = /sampa/fcanedo/out/exec.2.0_10.$(Process).out
+stderr = /sampa/fcanedo/err/exec.2.0_10.$(Process).err
 queue 1000

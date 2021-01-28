@@ -1,6 +1,6 @@
 executable = pp.sh
 getenv=True
-arguments = $(Process)
+arguments = $(Process) 10000 2760 0
 log = /sampa/fcanedo/log/pp.$(Process).log
 stdout = /sampa/fcanedo/out/pp.$(Process).out
 stderr = /sampa/fcanedo/err/pp.$(Process).err

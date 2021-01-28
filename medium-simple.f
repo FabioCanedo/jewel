@@ -625,7 +625,8 @@ C--max rapidity
 C--function call
       DOUBLE PRECISION GETTEMPMAX
 	GETLTIMEMAX=TAUI*(GETTEMPMAX()/TC)**3*cosh(etamax2)
-      !write(*,*) "Lifetime whithout boost:",getltimemax/cosh(etamax2)
+      write(*,*) "Lifetime with boost:",getltimemax
+      write(*,*) "Lifetime without boost:",getltimemax/cosh(etamax2)
 	END
 
 

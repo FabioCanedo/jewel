@@ -1,0 +1,8 @@
+executable = analysis.sh
+universe=vanilla
+getenv=True
+arguments = $(Process)
+log = /sampa/fcanedo/log/pp.analysis.$(Process).log
+stdout = /sampa/fcanedo/out/pp.analysis.$(Process).out
+stderr = /sampa/fcanedo/err/pp.analysis.$(Process).err
+queue 10

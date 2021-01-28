@@ -1099,7 +1099,6 @@ C--production vertex
         CALL PICKVTX(X0,Y0)
         LTIME=GETLTIMEMAX()
 
-
  99	  CALL PYEVNT
 
 
@@ -2147,6 +2146,8 @@ C--local variables
 	X=0.d0
 	Q=0.d0
 	TYPI=0
+      if(line.eq.32) then
+      end if
 
       IF ((N.GT.20000).and.compress) roomleft = compressevent(line)
 
@@ -2353,6 +2354,7 @@ C--do kinematics
  21   IF(((K(LINE,1).EQ.1).AND.(P(LINE,5).GT.0.d0))
      &	.OR.((K(LINE,1).EQ.2).AND.(zd(line).gt.0.d0))
      &	.OR.(STARTTIME.LT.LTIME))THEN
+           if(isnan(starttime)) stop
 	 GOTO 20
 	ENDIF
 	IF((K(LINE,1).EQ.1).AND.(P(LINE,5).EQ.0.d0)) K(LINE,1)=4
@@ -6280,6 +6282,7 @@ C--local variables
 	CHARACTER PTYPE
 	LOGICAL STOPNOW
 
+
 C--initialization
 	GETDELTAT=.FALSE.
       DELTAT=0.D0
@@ -7060,3 +7063,26 @@ C--local variables
 	write(logfid,1000)date,time
 	end
 
+      subroutine printdebug(marker)
+            implicit none
+C--time common block
+            COMMON/TIME/MV(23000,5)
+            DOUBLE PRECISION MV
+C--Common block of Pythia
+      COMMON/PYJETS/N,NPAD,K(23000,5),P(23000,5),V(23000,5)
+	INTEGER N,NPAD,K
+	DOUBLE PRECISION P,V
+            integer i,startline,endline
+            integer marker
+            startline=1
+            endline=1
+            do i=startline,endline
+                  !write(*,*) i, 'p',p(i,1)
+                  !write(*,*) i, 'p',p(i,2)
+                  !write(*,*) i, 'p',p(i,3)
+                  !write(*,*) i, 'p',p(i,4)
+                  !write(*,*) i, 'p',p(i,5)
+                  write(*,*) i, 'p',p(i,:)
+            if (isnan(p(i,1))) stop
+            end do
+      end subroutine

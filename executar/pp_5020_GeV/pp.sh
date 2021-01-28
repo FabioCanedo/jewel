@@ -12,7 +12,8 @@ export LHAPATH="/sampa/fcanedo/lhapdf/share/lhapdf/PDFsets"
 export RIVET_ANALYSIS_PATH="/sampa/fcanedo/rivetanalises"
 export HEPMC_FILE="/sampa/fcanedo/jewel-2.2.0/hepmc/pp_5020_GeV/pp."$NJOB".hepmc"
 export YODA_GENERIC_FILE="/sampa/fcanedo/results/histograms/pp_5020_GeV/pp/MC_GENERIC/pp."$NJOB".yoda"
-export YODA_SHAPE_FILE="/sampa/fcanedo/results/histograms/pp_5020_GeV/shape_pp/JET_SHAPE/shape.pp."$NJOB".yoda"
+export YODA_SHAPE_FILE="/sampa/fcanedo/results/histograms/pp_5020_GeV/shape.pp."$NJOB".yoda"
+export YODA_RAA_FILE="/sampa/fcanedo/results/histograms/pp_5020_GeV/raa.pp."$NJOB".yoda"
 export YODA_ZHADRON_FILE="/sampa/fcanedo/results/histograms/pp_5020_GeV/z_hadron/pp."$NJOB".yoda"
 
 chmod 777 $MacroDir/jewel-2.2.0-simple
@@ -42,6 +43,8 @@ eval `alienv printenv VO_ALICE@Rivet::2.7.2-alice2-1`
 #echo "Medfile does not exist"
 #fi
 
+if false ; then
+
 cd $MacroDir/params/pp_5020_GeV/
 cp pp.dat pp."$NJOB".dat
 
@@ -69,6 +72,8 @@ rm pp."$NJOB".dat
 #xz "$FileDir"/"$MED_FILE_NUMBER".dat
 #fi
 
+fi
+
 
 
 #let line=($NJOB%100+1)
@@ -79,4 +84,5 @@ export PSI=0.0
 
 #rivet -a MC_GENERIC --ignore-beams -H $YODA_GENERIC_FILE $HEPMC_FILE
 rivet  -a JET_SHAPE --ignore-beams -H $YODA_SHAPE_FILE $HEPMC_FILE
+rivet  -a JET_RAA --ignore-beams -H $YODA_RAA_FILE $HEPMC_FILE
 #rivet -a Z_HADRON --ignore-beams -H $YODA_ZHADRON_FILE $HEPMC_FILE
