@@ -31,53 +31,53 @@ export MED_FILE_NUMBER=$NJOB
 
 if true ; then
 
-if [ -e "$FileDir"/"$MED_FILE_NUMBER".dat.xz ]; then
-xz -d "$FileDir"/"$MED_FILE_NUMBER".dat.xz
-echo "Medfile exists"
-else
-echo "Medfile does not exist"
-fi
+      if [ -e "$FileDir"/"$MED_FILE_NUMBER".dat.xz ]; then
+            xz -d "$FileDir"/"$MED_FILE_NUMBER".dat.xz
+            echo "Medfile exists"
+      else
+            echo "Medfile does not exist"
+      fi
 
-cd $MacroDir/params/PbPb_5020_GeV/
-cp read20_40.dat read20_40."$NJOB".dat
+      cd $MacroDir/params/PbPb_5020_GeV/
+      cp read20_40.dat read20_40."$NJOB".dat
 
-sed -i "s/\(NJOB\s\).*/\1"$NJOB"/g" read20_40."$NJOB".dat
-sed -i "s/\(LOGFILE\s.*read\.\).*/\1"$NJOB".log/g" read20_40."$NJOB".dat
-sed -i "s/\(HEPMCFILE\s.*read\.\).*/\1"$NJOB".hepmc/g" read20_40."$NJOB".dat
-sed -i "s/\(MEDIUMPARAMS\s.*read20_40\.\).*/\1"$NJOB".dat/g" read20_40."$NJOB".dat
-sed -i "s/\(XSECFILE\s.*read_\).*/\1"$NJOB".dat/g" read20_40."$NJOB".dat
-sed -i "s/\(SPLITINTFILE\s.*read_\).*/\1"$NJOB".dat/g" read20_40."$NJOB".dat
-sed -i "s/\(PDFFILE\s.*read_\).*/\1"$NJOB".dat/g" read20_40."$NJOB".dat
+      sed -i "s/\(NJOB\s\).*/\1"$NJOB"/g" read20_40."$NJOB".dat
+      sed -i "s/\(LOGFILE\s.*read\.\).*/\1"$NJOB".log/g" read20_40."$NJOB".dat
+      sed -i "s/\(HEPMCFILE\s.*read\.\).*/\1"$NJOB".hepmc/g" read20_40."$NJOB".dat
+      sed -i "s/\(MEDIUMPARAMS\s.*read20_40\.\).*/\1"$NJOB".dat/g" read20_40."$NJOB".dat
+      sed -i "s/\(XSECFILE\s.*read_\).*/\1"$NJOB".dat/g" read20_40."$NJOB".dat
+      sed -i "s/\(SPLITINTFILE\s.*read_\).*/\1"$NJOB".dat/g" read20_40."$NJOB".dat
+      sed -i "s/\(PDFFILE\s.*read_\).*/\1"$NJOB".dat/g" read20_40."$NJOB".dat
 
-cd $MacroDir/medparams/PbPb_5020_GeV/
-cp read20_40.dat read20_40."$NJOB".dat
+      cd $MacroDir/medparams/PbPb_5020_GeV/
+      cp read20_40.dat read20_40."$NJOB".dat
 
-sed -i "s/\(MEDFILE\s.*\/\)[0-9]\{1,\}\(\.dat\)/\1"$MED_FILE_NUMBER"\2/g" read20_40."$NJOB".dat
-#cat read.$NJOB.dat
+      sed -i "s/\(MEDFILE\s.*\/\)[0-9]\{1,\}\(\.dat\)/\1"$MED_FILE_NUMBER"\2/g" read20_40."$NJOB".dat
+      #cat read.$NJOB.dat
 
-cd $MacroDir/integrals
-cp xsecs.dat xsecs_read20_40_$NJOB".dat"
-cp splitint.dat splitint_read20_40_$NJOB".dat"
-cp pdfs.dat pdfs_read20_40_$NJOB".dat"
+      cd $MacroDir/integrals
+      cp xsecs.dat xsecs_read20_40_$NJOB".dat"
+      cp splitint.dat splitint_read20_40_$NJOB".dat"
+      cp pdfs.dat pdfs_read20_40_$NJOB".dat"
 
-cd $MacroDir
-$MacroDir/jewel-2.2.0-reader $MacroDir/params/PbPb_5020_GeV/read20_40."$NJOB".dat
+      cd $MacroDir
+      $MacroDir/jewel-2.2.0-reader $MacroDir/params/PbPb_5020_GeV/read20_40."$NJOB".dat
 
-cd $MacroDir/integrals
-rm xsecs_read20_40_$NJOB".dat"
-rm splitint_read20_40_$NJOB".dat"
-rm pdfs_read20_40_$NJOB".dat"
+      cd $MacroDir/integrals
+      rm xsecs_read20_40_$NJOB".dat"
+      rm splitint_read20_40_$NJOB".dat"
+      rm pdfs_read20_40_$NJOB".dat"
 
-cd $MacroDir/params/PbPb_5020_GeV/
-rm read20_40."$NJOB".dat
+      cd $MacroDir/params/PbPb_5020_GeV/
+      rm read20_40."$NJOB".dat
 
-cd $MacroDir/medparams/PbPb_5020_GeV/
-rm read20_40."$NJOB".dat
+      cd $MacroDir/medparams/PbPb_5020_GeV/
+      rm read20_40."$NJOB".dat
 
-if [ ! -e "$FileDir"/"$MED_FILE_NUMBER".dat.xz ]; then
-echo ""
-xz "$FileDir"/"$MED_FILE_NUMBER".dat
-fi
+      if [ ! -e "$FileDir"/"$MED_FILE_NUMBER".dat.xz ]; then
+            echo ""
+            xz "$FileDir"/"$MED_FILE_NUMBER".dat
+      fi
 
 fi
 

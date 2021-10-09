@@ -1,4 +1,4 @@
-14.05.2020, 00:09:53
+22.06.2021, 14:55:53
 
                     _________________________________________                  
                    |                                         |                 
@@ -40,12 +40,12 @@
  parameters of the run:
  NEVENT       =        10000
  NJOB         =            0
- LOGFILE      = out.log                                                                                                                                                                                                 
- HEPMCFILE    = out.hepmc                                                                                                                                                                                               
- SPLITINTFILE = splitint.dat                                                                                        
- PDFFILE      = pdfs.dat                                                                                            
- XSECFILE     = xsecs.dat                                                                                           
- MEDIUMPARAMS = medium-params.dat                                                                                   
+ LOGFILE      = out.log                                                                                             
+ HEPMCFILE    = out.hepmc                                                                                           
+ SPLITINTFILE = splitint.dat                                                                    
+ PDFFILE      = pdfs.dat                                                                        
+ XSECFILE     = xsecs.dat                                                                       
+ MEDIUMPARAMS = medium.params.dat                                                               
  NF           =            3
  LAMBDAQCD    =   0.40000000596046448     
  Q0           =    1.5000000000000000     
@@ -74,346 +74,29 @@
 
  No medium parameter file found, will run with default settings.
  using parameters:
- TAUI        =  0.59999999999999998     
- TI          =  0.35999999999999999     
- TC          =  0.17000000000000001     
- WOODSSAXON  = T
- MODMED      = T
- MEDFILELIST = F
- CENTRMIN    =   0.0000000000000000     
- CENTRMAX    =   10.000000000000000     
- NF          =           3
- A           =         208
- N0          =  0.17000000000000001     
- D           =  0.54000000000000004     
- SIGMANN     =   6.1999998092651367     
- MDFACTOR    =  0.45000000000000001     
- MDSCALEFAC  =  0.90000000000000002     
+ TAUI       =  0.59999999999999998     
+ TI         =  0.35999999999999999     
+ TC         =  0.17000000000000001     
+ WOODSSAXON = T
+ CENTRMIN   =   0.0000000000000000     
+ CENTRMAX   =   10.000000000000000     
+ NF         =           3
+ A          =         208
+ N0         =  0.17000000000000001     
+ D          =  0.54000000000000004     
+ SIGMANN    =   6.1999998092651367     
+ MDFACTOR   =  0.45000000000000001     
+ MDSCALEFAC =  0.90000000000000002     
 
 
 
 
- read splitting integrals from splitint.dat                                                                                        
+ have to integrate splitting functions, this may take some time
+ write splitting integrals to splitint.dat                                                                    
 
- read pdfs from pdfs.dat                                                                                            
+ have to integrate pdfs, this may take some time
+ write pdfs to pdfs.dat                                                                        
 
- read cross sections from xsecs.dat                                                                                           
+ have to integrate cross sections, this may take some time
+ write cross sections to xsecs.dat                                                                       
 
-
- ####################################################
-
- generating         1577  events in p+ + p+ channel
-
- ####################################################
-
- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- ++  This is a modified version of PYTHIA that may only be used with JEWEL.  ++
- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-1                                                                              
- ******************************************************************************
- ******************************************************************************
- **                                                                          **
- **                                                                          **
- **              *......*                  Welcome to the Lund Monte Carlo!  **
- **         *:::!!:::::::::::*                                               **
- **      *::::::!!::::::::::::::*          PPP  Y   Y TTTTT H   H III   A    **
- **    *::::::::!!::::::::::::::::*        P  P  Y Y    T   H   H  I   A A   **
- **   *:::::::::!!:::::::::::::::::*       PPP    Y     T   HHHHH  I  AAAAA  **
- **   *:::::::::!!:::::::::::::::::*       P      Y     T   H   H  I  A   A  **
- **    *::::::::!!::::::::::::::::*!       P      Y     T   H   H III A   A  **
- **      *::::::!!::::::::::::::* !!                                         **
- **      !! *:::!!:::::::::::*    !!       This is PYTHIA version 6.425      **
- **      !!     !* -><- *         !!       Last date of change: 23 Mar 2011  **
- **      !!     !!                !!                                         **
- **      !!     !!                !!       Now is  0 Jan 2000 at  0:00:00    **
- **      !!                       !!                                         **
- **      !!        lh             !!       Disclaimer: this program comes    **
- **      !!                       !!       without any guarantees. Beware    **
- **      !!                 hh    !!       of errors and use common sense    **
- **      !!    ll                 !!       when interpreting results.        **
- **      !!                       !!                                         **
- **      !!                                Copyright T. Sjostrand (2011)     **
- **                                                                          **
- ** An archive of program versions and documentation is found on the web:    **
- ** http://www.thep.lu.se/~torbjorn/Pythia.html                              **
- **                                                                          **
- ** When you cite this program, the official reference is to the 6.4 manual: **
- ** T. Sjostrand, S. Mrenna and P. Skands, JHEP05 (2006) 026                 **
- ** (LU TP 06-13, FERMILAB-PUB-06-052-CD-T) [hep-ph/0603175].                **
- **                                                                          **
- ** Also remember that the program, to a large extent, represents original   **
- ** physics research. Other publications of special relevance to your        **
- ** studies may therefore deserve separate mention.                          **
- **                                                                          **
- ** Main author: Torbjorn Sjostrand; Department of Theoretical Physics,      **
- **   Lund University, Solvegatan 14A, S-223 62 Lund, Sweden;                **
- **   phone: + 46 - 46 - 222 48 16; e-mail: torbjorn@thep.lu.se              **
- ** Author: Stephen Mrenna; Computing Division, GDS Group,                   **
- **   Fermi National Accelerator Laboratory, MS 234, Batavia, IL 60510, USA; **
- **   phone: + 1 - 630 - 840 - 2556; e-mail: mrenna@fnal.gov                 **
- ** Author: Peter Skands; CERN/PH-TH, CH-1211 Geneva, Switzerland            **
- **   phone: + 41 - 22 - 767 24 47; e-mail: peter.skands@cern.ch             **
- **                                                                          **
- **                                                                          **
- ******************************************************************************
- ******************************************************************************
-1****************** PYINIT: initialization of PYTHIA routines *****************
-
- ==============================================================================
- I                                                                            I
- I             PYTHIA will be initialized for a p+ on p+ collider             I
- I                  at   2760.000 GeV center-of-mass energy                   I
- I                                                                            I
- ==============================================================================
-
- ******** PYMAXI: summary of differential cross-section maximum search ********
-
-           ==========================================================
-           I                                      I                 I
-           I  ISUB  Subprocess name               I  Maximum value  I
-           I                                      I                 I
-           ==========================================================
-           I                                      I                 I
-           I   11   f + f' -> f + f' (QCD)        I    3.6561D+07   I
-           I   12   f + fbar -> f' + fbar'        I    4.6487D+05   I
-           I   13   f + fbar -> g + g             I    2.5961D+05   I
-           I   28   f + g -> f + g                I    8.0085D+07   I
-           I   53   g + g -> f + fbar             I    1.4215D+06   I
-           I   68   g + g -> g + g                I    1.9791D+07   I
-           I                                      I                 I
-           ==========================================================
-
- ********************** PYINIT: initialization completed **********************
-
- done with event number          100
- done with event number          200
- done with event number          300
- done with event number          400
- done with event number          500
- done with event number          600
- done with event number          700
- done with event number          800
- done with event number          900
- done with event number         1000
- done with event number         1100
- done with event number         1200
- done with event number         1300
- done with event number         1400
- done with event number         1500
-
- cross section in p+ + p+ channel:   11.182789150152626      mb
- sum of event weights in p+ + p+ channel:   3.7648517724416289E-003
-
-
- ####################################################
-
- generating         2393  events in p+ + n0 channel
-
- ####################################################
-
-1****************** PYINIT: initialization of PYTHIA routines *****************
-
- ==============================================================================
- I                                                                            I
- I             PYTHIA will be initialized for a p+ on n0 collider             I
- I                  at   2760.000 GeV center-of-mass energy                   I
- I                                                                            I
- ==============================================================================
-
- ******** PYMAXI: summary of differential cross-section maximum search ********
-
-           ==========================================================
-           I                                      I                 I
-           I  ISUB  Subprocess name               I  Maximum value  I
-           I                                      I                 I
-           ==========================================================
-           I                                      I                 I
-           I   11   f + f' -> f + f' (QCD)        I    3.9135D+07   I
-           I   12   f + fbar -> f' + fbar'        I    5.2091D+05   I
-           I   13   f + fbar -> g + g             I    2.9094D+05   I
-           I   28   f + g -> f + g                I    8.0085D+07   I
-           I   53   g + g -> f + fbar             I    1.4215D+06   I
-           I   68   g + g -> g + g                I    1.9791D+07   I
-           I                                      I                 I
-           ==========================================================
-
- ********************** PYINIT: initialization completed **********************
-
- done with event number          100
- done with event number          200
- done with event number          300
- done with event number          400
- done with event number          500
- done with event number          600
- done with event number          700
- done with event number          800
- done with event number          900
- done with event number         1000
- done with event number         1100
- done with event number         1200
- done with event number         1300
- done with event number         1400
- done with event number         1500
- done with event number         1600
- done with event number         1700
- done with event number         1800
- done with event number         1900
- done with event number         2000
- done with event number         2100
- done with event number         2200
- done with event number         2300
-
- cross section in p+ + n0 channel:   11.004096061752428      mb
- sum of event weights in p+ + n0 channel:   6.2994404776421245E-003
-
-
- ####################################################
-
- generating         2388  events in n0 + p+ channel
-
- ####################################################
-
-1****************** PYINIT: initialization of PYTHIA routines *****************
-
- ==============================================================================
- I                                                                            I
- I             PYTHIA will be initialized for a n0 on p+ collider             I
- I                  at   2760.000 GeV center-of-mass energy                   I
- I                                                                            I
- ==============================================================================
-
- ******** PYMAXI: summary of differential cross-section maximum search ********
-
-           ==========================================================
-           I                                      I                 I
-           I  ISUB  Subprocess name               I  Maximum value  I
-           I                                      I                 I
-           ==========================================================
-           I                                      I                 I
-           I   11   f + f' -> f + f' (QCD)        I    3.9135D+07   I
-           I   12   f + fbar -> f' + fbar'        I    5.2091D+05   I
-           I   13   f + fbar -> g + g             I    2.9097D+05   I
-           I   28   f + g -> f + g                I    8.0085D+07   I
-           I   53   g + g -> f + fbar             I    1.4215D+06   I
-           I   68   g + g -> g + g                I    1.9791D+07   I
-           I                                      I                 I
-           ==========================================================
-
- ********************** PYINIT: initialization completed **********************
-
- done with event number          100
- done with event number          200
- done with event number          300
- done with event number          400
- done with event number          500
- done with event number          600
- done with event number          700
- done with event number          800
- done with event number          900
- done with event number         1000
- done with event number         1100
- done with event number         1200
- done with event number         1300
- done with event number         1400
- done with event number         1500
- done with event number         1600
- done with event number         1700
- done with event number         1800
- done with event number         1900
- done with event number         2000
- done with event number         2100
- done with event number         2200
- done with event number         2300
-
- cross section in n0 + p+ channel:   10.997161116549888      mb
- sum of event weights in n0 + p+ channel:   5.8893014554229402E-003
-
-
- ####################################################
-
- generating         3640  events in n0 + n0 channel
-
- ####################################################
-
-1****************** PYINIT: initialization of PYTHIA routines *****************
-
- ==============================================================================
- I                                                                            I
- I             PYTHIA will be initialized for a n0 on n0 collider             I
- I                  at   2760.000 GeV center-of-mass energy                   I
- I                                                                            I
- ==============================================================================
-
- ******** PYMAXI: summary of differential cross-section maximum search ********
-
-           ==========================================================
-           I                                      I                 I
-           I  ISUB  Subprocess name               I  Maximum value  I
-           I                                      I                 I
-           ==========================================================
-           I                                      I                 I
-           I   11   f + f' -> f + f' (QCD)        I    3.6561D+07   I
-           I   12   f + fbar -> f' + fbar'        I    4.6487D+05   I
-           I   13   f + fbar -> g + g             I    2.5961D+05   I
-           I   28   f + g -> f + g                I    8.0085D+07   I
-           I   53   g + g -> f + fbar             I    1.4215D+06   I
-           I   68   g + g -> g + g                I    1.9791D+07   I
-           I                                      I                 I
-           ==========================================================
-
- ********************** PYINIT: initialization completed **********************
-
- done with event number          100
- done with event number          200
- done with event number          300
- done with event number          400
- done with event number          500
- done with event number          600
- done with event number          700
- done with event number          800
- done with event number          900
- done with event number         1000
- done with event number         1100
- done with event number         1200
- done with event number         1300
- done with event number         1400
- done with event number         1500
- done with event number         1600
- done with event number         1700
- done with event number         1800
- done with event number         1900
- done with event number         2000
- done with event number         2100
- done with event number         2200
- done with event number         2300
- done with event number         2400
- done with event number         2500
- done with event number         2600
- done with event number         2700
- done with event number         2800
- done with event number         2900
- done with event number         3000
- done with event number         3100
- done with event number         3200
- done with event number         3300
- done with event number         3400
- done with event number         3500
- done with event number         3600
-
- cross section in n0 + n0 channel:   11.046201862988944      mb
- sum of event weights in n0 + n0 channel:   8.7868204073386965E-003
-
-
- mean number of scatterings:   0.0000000000000000     
- mean number of effective scatterings:   0.0000000000000000     
- mean number of splittings:   3.8033570614585059     
-
- number of extrapolations in splitting integral:            0  (                       NaN %)
- number of extrapolations in splitting partonic PDFs:            0  (                       NaN %)
- number of extrapolations in splitting cross sections:            0  (                       NaN %)
- number of extrapolations in Sudakov form factor:            0  (                       NaN %)
-
- number of good events:         9998
- total number of discarded events:            0
- number of events for which conversion to hepmc failed:            0
-14.05.2020, 00:11:56

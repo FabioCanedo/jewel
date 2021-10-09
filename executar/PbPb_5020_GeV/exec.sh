@@ -23,7 +23,7 @@ export mdsfactor=$4
 export mincent=$5
 export maxcent=$6
 export tc=$7
-       
+
 #exporting eviroment variables necessary for the run
 export FileDir="/sampa/fcanedo/IC/exechydro/PbPb_"$energy"_GeV"
 export MacroDir="/sampa/fcanedo/jewel-2.2.0"
@@ -42,15 +42,15 @@ export YODA_VN_FILE=$YODA_FOLDER"vn.exec_"$tc"_"$energy"_"$mdsfactor"_"$NJOB".yo
 export YODA_ZHADRON_FILE=$YODA_FOLDER"zhadron.exec_"$tc"_"$energy"_"$mdsfactor"_"$NJOB".yoda"
 
 if [ ! -e $YODA_FOLDER ] ; then
-      mkdir -p $YODA_FOLDER
+  mkdir -p $YODA_FOLDER
 fi
 
 if [ ! -e $LOG_FOLDER ] ; then
-      mkdir -p $LOG_FOLDER
+  mkdir -p $LOG_FOLDER
 fi
 
 if [ ! -e $HEPMC_FOLDER ] ; then
-      mkdir -p $HEPMC_FOLDER
+  mkdir -p $HEPMC_FOLDER
 fi
 
 
@@ -71,32 +71,32 @@ eval `alienv printenv VO_ALICE@Rivet::2.7.2-alice2-1`
 #Decide whether to perform simulation or just analysis
 if true ; then
 
-      if [ -e $HEPMC_FILE".xz" ]; then
-            rm $HEPMC_FILE".xz"
-      fi
+  if [ -e $HEPMC_FILE".xz" ]; then
+    rm $HEPMC_FILE".xz"
+  fi
 
-      cd $MacroDir/params/PbPb_"$energy"_GeV/
-      cp exec.dat exec."$NJOB".dat
+  cd $MacroDir/params/PbPb_"$energy"_GeV/
+  cp exec.dat exec."$NJOB".dat
 
-      sed -i "s/\(NJOB\s\).*/\1"$NJOB"/g" exec."$NJOB".dat
-      sed -i "s/\(NEVENT\s\).*/\1"$NEVENT"/g" exec."$NJOB".dat
-      sed -i "s|\(LOGFILE\s\).*|\1$LOG_FILE|g" exec."$NJOB".dat
-      sed -i "s|\(HEPMCFILE\s\).*|\1$HEPMC_FILE|g" exec."$NJOB".dat
-      sed -i "s/\(MEDIUMPARAMS\s.*exec\.\).*/\1"$NJOB".dat/g" exec."$NJOB".dat
-      sed -i "s/\(XSECFILE\s.*exec_\).*/\1"$NJOB".dat/g" exec."$NJOB".dat
-      sed -i "s/\(SPLITINTFILE\s.*exec_\).*/\1"$NJOB".dat/g" exec."$NJOB".dat
-      sed -i "s/\(PDFFILE\s.*exec_\).*/\1"$NJOB".dat/g" exec."$NJOB".dat
+  sed -i "s/\(NJOB\s\).*/\1"$NJOB"/g" exec."$NJOB".dat
+  sed -i "s/\(NEVENT\s\).*/\1"$NEVENT"/g" exec."$NJOB".dat
+  sed -i "s|\(LOGFILE\s\).*|\1$LOG_FILE|g" exec."$NJOB".dat
+  sed -i "s|\(HEPMCFILE\s\).*|\1$HEPMC_FILE|g" exec."$NJOB".dat
+  sed -i "s/\(MEDIUMPARAMS\s.*exec\.\).*/\1"$NJOB".dat/g" exec."$NJOB".dat
+  sed -i "s/\(XSECFILE\s.*exec_\).*/\1"$NJOB".dat/g" exec."$NJOB".dat
+  sed -i "s/\(SPLITINTFILE\s.*exec_\).*/\1"$NJOB".dat/g" exec."$NJOB".dat
+  sed -i "s/\(PDFFILE\s.*exec_\).*/\1"$NJOB".dat/g" exec."$NJOB".dat
 
-      cd $MacroDir/medparams/PbPb_"$energy"_GeV/
-      cp exec.dat exec."$NJOB".dat
-      #cat exec.dat
+  cd $MacroDir/medparams/PbPb_"$energy"_GeV/
+  cp exec.dat exec."$NJOB".dat
+  #cat exec.dat
 
-      sed -i "s/\(MEDFILE\s.*\/\)[0-9]*\(\.dat\)/\1"$MED_FILE_NUMBER"\2/g" exec."$NJOB".dat
-      sed -i "s/\(MDSCALEFAC\s\).*/\1"$mdsfactor"d0/g" exec."$NJOB".dat
+  sed -i "s/\(MEDFILE\s.*\/\)[0-9]*\(\.dat\)/\1"$MED_FILE_NUMBER"\2/g" exec."$NJOB".dat
+  sed -i "s/\(MDSCALEFAC\s\).*/\1"$mdsfactor"d0/g" exec."$NJOB".dat
 
-      sed -i "s|\(CENTRMIN\s\).*|\1"$mincent".|g" exec."$NJOB".dat
-      sed -i "s|\(CENTRMAX\s\).*|\1"$maxcent".|g" exec."$NJOB".dat
-      sed -i "s|\(TC\s\).*|\1"$tc"d0|g" exec."$NJOB".dat
+  sed -i "s|\(CENTRMIN\s\).*|\1"$mincent".|g" exec."$NJOB".dat
+  sed -i "s|\(CENTRMAX\s\).*|\1"$maxcent".|g" exec."$NJOB".dat
+  sed -i "s|\(TC\s\).*|\1"$tc"d0|g" exec."$NJOB".dat
 
       #cd $MacroDir/integrals
       #cp xsecs.dat xsecs_exec_$NJOB".dat"
@@ -120,7 +120,7 @@ if true ; then
 fi
 
 if [ -e $HEPMC_FILE".xz" ]; then
-      rm $HEPMC_FILE".xz"
+  rm $HEPMC_FILE".xz"
 fi
 
 echo $HEPMC_FILE
@@ -137,5 +137,5 @@ rivet  -a JET_VN --ignore-beams -H $YODA_VN_FILE $HEPMC_FILE
 #rivet -a Z_HADRON --ignore-beams -H $YODA_ZHADRON_FILE $HEPMC_FILE
 
 if false ; then
-      rm $HEPMC_FILE
+  rm $HEPMC_FILE
 fi

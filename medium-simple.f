@@ -774,6 +774,7 @@ C--local variables
       INTEGER IX,IY,IB
       DOUBLE PRECISION B,P,PROD,X,Y,NTHICK,NPART,pprev
 
+      
       pprev=0.
       DO 30 IB=1,200
        B=0.1d0*IB

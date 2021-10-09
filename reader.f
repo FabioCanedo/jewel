@@ -17,7 +17,9 @@ C++                                                            ++
       character*100 filename
       double precision timesteps(60)
       double precision tprofile(np,np,60)
-      double precision t,x,y,temp
+      double precision ux(np,np,60)
+      double precision uy(np,np,60)
+      double precision t,x,y,temp,vx,vy
       integer linecounter
 
       open(unit=1,file=filename,iostat=ios)
@@ -32,7 +34,7 @@ C++                                                            ++
       linecounter=0
       do while (ios.eq.0)
       
-      read(1,*,iostat=ios) t,x,y,temp
+      read(1,*,iostat=ios) t,x,y,temp,vx,vy
       i=geti(x,np)
       j=geti(y,np)
 
@@ -44,6 +46,8 @@ C++                                                            ++
       end if
 
       tprofile(i,j,k)=temp
+      ux(i,j,k)=vx
+      uy(i,j,k)=vy
 
       end do
       
