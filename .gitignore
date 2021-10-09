@@ -1,3 +1,4 @@
 hepmc
 logs
 *.dat
+*.hepmc
