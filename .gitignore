@@ -2,3 +2,4 @@ hepmc
 logs
 *.dat
 *.hepmc
+*.log
