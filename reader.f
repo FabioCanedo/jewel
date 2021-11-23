@@ -8,7 +8,7 @@ C++   for JEWEL                                                ++
 
 C++   This is the main subroutine that performs the reading    ++
 C++                                                            ++
-      subroutine reader(filename,np,nt,timesteps,tprofile,ux,uy)
+      subroutine reader(filename,np,nt,timesteps,tprofile,u,theta)
       implicit none
       integer i,j,k
       integer np,nt
@@ -17,8 +17,8 @@ C++                                                            ++
       character*100 filename
       double precision timesteps(60)
       double precision tprofile(np,np,60)
-      double precision ux(np,np,60)
-      double precision uy(np,np,60)
+      double precision u(np,np,60)
+      double precision theta(np,np,60)
       double precision t,x,y,temp,vx,vy
       integer linecounter
 
@@ -48,8 +48,16 @@ C++                                                            ++
       !write(*,*) 'profiles: ', t, x, y, temp, vx, vy
 
       tprofile(i,j,k)=temp
-      ux(i,j,k)=vx
-      uy(i,j,k)=vy
+      u(i,j,k)=sqrt(vx**2+vy**2)
+      if(vx.ne.0.d0) then
+            theta(i,j,k)=atan(vy/vx)
+      else
+            if(vy.gt.0.d0) then
+                  theta(i,j,k)=pi/2.d0
+            else
+                  theta(i,j,k)=-pi/2.d0
+            end if
+      end if
 
       end do
       

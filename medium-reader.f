@@ -436,7 +436,7 @@ C--identifier of log file
 C--local variables
       DOUBLE PRECISION X,Y,Z,T,MS,PX,PY,PZ,E,MD,TEMP
       double precision u,ux,uy,px2,py2,px3,py3,e3
-      double precision getux,getuy,eta
+      double precision getu,getutheta,eta
       INTEGER TYPE
       DOUBLE PRECISION R,PYR,pmax,wt,tau,theta,phi,pi,p,ys,pz2,e2
       double precision e4
@@ -495,18 +495,8 @@ C--local variables
       !write(*,*) 'E2 ', E2, ', PX ', px, ', PY', py, ', PZ2 ', pz2
  
       !Getting local velocity to perform boost
-      ux=getux(x,y,z,t,TEMP)
-      uy=getuy(x,y,z,t,TEMP)
-      u=sqrt(ux**2+uy**2)
-      if(ux.ne.0.d0) then
-            theta=atan(uy/ux)
-      else
-            if(uy.gt.0.d0) then
-                  theta=pi/2.d0
-            else
-                  theta=-pi/2.d0
-            end if
-      end if
+      u=getu(x,y,z,t,temp)
+      theta=getutheta(x,y,z,t,temp)
       eta=0.5d0*log((1.d0+u)/(1.d0-u))
       
       !write(*,*) 'Transform variables:'
@@ -630,7 +620,7 @@ C--factor to vary Debye mass
       double precision tempfac
 C--   local variables
       DOUBLE PRECISION X3,Y3,Z3,T3,PI,GETTEMP,tau,cosheta
-      double precision getux,getuy
+      double precision getu,getutheta
       double precision vx,vy,v,gam,localtemp
       DATA PI/3.141592653589793d0/
 
@@ -641,9 +631,7 @@ C--   local variables
         RETURN
       END IF
  
-      vx=getux(x3,y3,z3,t3,localtemp)
-      vy=getuy(x3,y3,z3,t3,localtemp)
-      v=sqrt(vx**2+vy**2)
+      v=getu(x3,y3,z3,t3,localtemp)
       tau = sqrt(t3**2-z3**2)
 
       IF (v.ge.1.d0) THEN
@@ -678,8 +666,8 @@ C--medium parameters
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
       common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
       double precision timesteps,tprofile,prob
-      common/gridvel/ux(834,834,60),uy(834,834,60)
-      double precision ux,uy
+      common/gridvel/u(834,834,60),utheta(834,834,60)
+      double precision u,utheta
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -719,44 +707,44 @@ C--local variables
 
       END
 
-      double precision function getux(x,y,z,t,localtemperature)
+      double precision function getu(x,y,z,t,localtemperature)
             implicit none
             integer np
             double precision x,y,z,t,tau,localtemperature
             double precision interpol 
             common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
             double precision timesteps,tprofile,prob
-            common/gridvel/ux(834,834,60),uy(834,834,60)
-            double precision ux,uy           
+            common/gridvel/u(834,834,60),utheta(834,834,60)
+            double precision u,utheta           
 
-            getux = 0.1
-            !getux = 0.d0
-            !tau = sqrt(t**2 - z**2)
-            !IF ((tau.le.0.6) .OR. (localtemperature.le.0.1)) THEN
-            !  RETURN
-            !END IF
-            !getux=interpol(tau,x,y,834,timesteps,ux)
+            !getux = 0.1
+            getu = 0.d0
+            tau = sqrt(t**2 - z**2)
+            IF ((tau.le.0.6) .OR. (localtemperature.le.0.1)) THEN
+              RETURN
+            END IF
+            getu=interpol(tau,x,y,834,timesteps,u)
             !write(*,*) 'NP:', np
             return
       end function
 
-      double precision function getuy(x,y,z,t,localtemperature)
+      double precision function getutheta(x,y,z,t,localtemperature)
             implicit none
             integer np
             double precision x,y,z,t,tau,localtemperature
             double precision interpol 
             common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
             double precision timesteps,tprofile,prob
-            common/gridvel/ux(834,834,60),uy(834,834,60)
-            double precision ux,uy           
+            common/gridvel/u(834,834,60),utheta(834,834,60)
+            double precision u,utheta           
 
-            getuy = 0.1
-            !getuy = 0.d0
-            !tau = sqrt(t**2 - z**2)
-            !IF ((tau.le.0.6) .OR. (localtemperature.le.0.1)) THEN
-            !  RETURN
-            !END IF
-            !getuy=interpol(tau,x,y,834,timesteps,uy)
+            !getuy = 0.1
+            getuy = 0.d0
+            tau = sqrt(t**2 - z**2)
+            IF ((tau.le.0.6) .OR. (localtemperature.le.0.1)) THEN
+              RETURN
+            END IF
+            getutheta=interpol(tau,x,y,834,timesteps,utheta)
             return
       end function
 
@@ -773,8 +761,8 @@ C--medium parameters
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
       common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
       double precision timesteps,tprofile,prob
-      common/gridvel/ux(834,834,60),uy(834,834,60)
-      double precision ux,uy
+      common/gridvel/u(834,834,60),utheta(834,834,60)
+      double precision u,utheta
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -813,8 +801,8 @@ C--medium parameters
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
       common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
       double precision timesteps,tprofile,prob
-      common/gridvel/ux(834,834,60),uy(834,834,60)
-      double precision ux,uy
+      common/gridvel/u(834,834,60),utheta(834,834,60)
+      double precision u,utheta
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -849,8 +837,8 @@ C--medium parameters
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
       common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
       double precision timesteps,tprofile,prob
-      common/gridvel/ux(834,834,60),uy(834,834,60)
-      double precision ux,uy
+      common/gridvel/u(834,834,60),utheta(834,834,60)
+      double precision u,utheta
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
@@ -885,8 +873,8 @@ C--medium parameters
       DOUBLE PRECISION CENTRMIN,CENTRMAX,BREAL,CENTR,RAU
       common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
       double precision timesteps,tprofile,prob
-      common/gridvel/ux(834,834,60),uy(834,834,60)
-      double precision ux,uy
+      common/gridvel/u(834,834,60),utheta(834,834,60)
+      double precision u,utheta
       COMMON/MEDPARAMINT/TAUI,TI,TC,D3,ZETA3,D,
      &N0,SIGMANN,A,WOODSSAXON,MODMED,MEDFILELIST
       DOUBLE PRECISION TAUI,TI,TC,ALPHA,BETA,GAMMA,D3,ZETA3,D,N0,
