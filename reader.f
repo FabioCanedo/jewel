@@ -240,7 +240,7 @@ C++                                                            ++
         yvec(i+2)=dx*yprime(i)
       endif
       end do
-      c=matmul(a,yvec) 
+      c=matmul(transpose(a),yvec) 
 
       t=(xval-x(1))/dx
 
