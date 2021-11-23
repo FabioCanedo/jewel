@@ -490,9 +490,13 @@ C--local variables
 	py  = p*sin(theta)*sin(phi)
 	pz2 = p*cos(theta)
 
+ 
+      !write(*,*) 'Variables before boost:'
+      !write(*,*) 'E2 ', E2, ', PX ', px, ', PY', py, ', PZ2 ', pz2
+ 
       !Getting local velocity to perform boost
-      ux=getux(x,y,z,t)
-      uy=getuy(x,y,z,t)
+      ux=getux(x,y,z,t,TEMP)
+      uy=getuy(x,y,z,t,TEMP)
       u=sqrt(ux**2+uy**2)
       if(ux.ne.0.d0) then
             theta=atan(uy/ux)
@@ -504,10 +508,13 @@ C--local variables
             end if
       end if
       eta=0.5d0*log((1.d0+u)/(1.d0-u))
+      
+      !write(*,*) 'Transform variables:'
+      !write(*,*) 'UX ', ux, ', UY', uy, ', ETA ', eta, ', THETA ', theta 
 
       px2=px*cos(-theta)-py*sin(-theta)
       py2=px*sin(-theta)+py*cos(-theta)
-      E2=E
+      !E2=E
 
       px3=px2*cosh(eta)-E2*sinh(eta)
       py3=py2
@@ -520,6 +527,11 @@ C--local variables
 	E   = cosh(ys)*E4 + sinh(ys)*pz2
 	pz  = sinh(ys)*E4 + cosh(ys)*pz2
 
+      !write(*,*) 'E ', E4, ', PX ', px, ', PY', py, ', PZ2 ', pz
+
+      IF (E.lt.0.d0) THEN
+        write(*,*) 'Negative energy (', E, ') in GETSCATTERER'
+      END IF
       END
 
 
@@ -619,19 +631,39 @@ C--factor to vary Debye mass
 C--   local variables
       DOUBLE PRECISION X3,Y3,Z3,T3,PI,GETTEMP,tau,cosheta
       double precision getux,getuy
-      double precision vx,vy,v,gam
+      double precision vx,vy,v,gam,localtemp
       DATA PI/3.141592653589793d0/
 
-      vx=getux(x3,y3,z3,t3)
-      vy=getuy(x3,y3,z3,t3)
+      getneff=0.d0
+      localtemp = GETTEMP(X3,Y3,Z3,T3)
+      !write(*,*) 'TEMP: ', localtemp 
+      IF ((ABS(Z3).gt.T3) .OR. (localtemp.le.TC)) THEN
+        RETURN
+      END IF
+ 
+      vx=getux(x3,y3,z3,t3,localtemp)
+      vy=getuy(x3,y3,z3,t3,localtemp)
       v=sqrt(vx**2+vy**2)
+      tau = sqrt(t3**2-z3**2)
+
+      IF (v.ge.1.d0) THEN
+        write(*,*) 'VEL NORM ', v, ' > 1 at (', x3, y3, z3, t3, ')'
+        write(*,*) 'VEL VEC (', vx, vy, z3/tau, ')'
+        write(*,*) 'TEMP: ', GETTEMP(X3,Y3,Z3,T3), ' TAU: ', tau
+      END IF
+
       gam=1.d0/sqrt(1-v**2)
-	tau = sqrt(t3**2-z3**2)
+	!tau = sqrt(t3**2-z3**2)
 	cosheta = t3/tau
       GETNEFF=(2.*6.*NF*D3*2./3. + 16.*ZETA3*3./2.)
-     &     *GETTEMP(X3,Y3,Z3,T3)**3/PI**2
+     &     *localtemp**3/PI**2
       getneff = getneff*gam !Local velocity contraction
 	getneff = getneff/cosheta
+      
+      !write(*,*) 'X: ', x3, '; Y: ', y3, '; TAU: ', tau
+      !write(*,*) 'Z: ', z3, '; T: ', t3
+      !write(*,*) 'Temp:', GETTEMP(X3,Y3,Z3,T3)
+      !write(*,*) 'Gamma: ', gam, '; ux: ', vx, '; uy: ', vy
       END
       
       
@@ -687,21 +719,44 @@ C--local variables
 
       END
 
-      double precision function getux(x,y,z,t)
+      double precision function getux(x,y,z,t,localtemperature)
             implicit none
-            double precision x,y,z,t
-            double precision tau,interpolate
-            tau=sqrt(t**2-z**2)
-            getux=interpolate(x,y,tau,2)
+            integer np
+            double precision x,y,z,t,tau,localtemperature
+            double precision interpol 
+            common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+            double precision timesteps,tprofile,prob
+            common/gridvel/ux(834,834,60),uy(834,834,60)
+            double precision ux,uy           
+
+            getux = 0.1
+            !getux = 0.d0
+            !tau = sqrt(t**2 - z**2)
+            !IF ((tau.le.0.6) .OR. (localtemperature.le.0.1)) THEN
+            !  RETURN
+            !END IF
+            !getux=interpol(tau,x,y,834,timesteps,ux)
+            !write(*,*) 'NP:', np
             return
       end function
 
-      double precision function getuy(x,y,z,t)
+      double precision function getuy(x,y,z,t,localtemperature)
             implicit none
-            double precision x,y,z,t
-            double precision tau,interpolate
-            tau=sqrt(t**2-z**2)
-            getuy=interpolate(x,y,tau,3)
+            integer np
+            double precision x,y,z,t,tau,localtemperature
+            double precision interpol 
+            common/grid/timesteps(60),tprofile(834,834,60),prob(834**2)
+            double precision timesteps,tprofile,prob
+            common/gridvel/ux(834,834,60),uy(834,834,60)
+            double precision ux,uy           
+
+            getuy = 0.1
+            !getuy = 0.d0
+            !tau = sqrt(t**2 - z**2)
+            !IF ((tau.le.0.6) .OR. (localtemperature.le.0.1)) THEN
+            !  RETURN
+            !END IF
+            !getuy=interpol(tau,x,y,834,timesteps,uy)
             return
       end function
 

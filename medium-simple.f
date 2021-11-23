@@ -625,8 +625,8 @@ C--max rapidity
 C--function call
       DOUBLE PRECISION GETTEMPMAX
 	GETLTIMEMAX=TAUI*(GETTEMPMAX()/TC)**3*cosh(etamax2)
-      write(*,*) "Lifetime with boost:",getltimemax
-      write(*,*) "Lifetime without boost:",getltimemax/cosh(etamax2)
+      !write(*,*) "Lifetime with boost:",getltimemax
+      !write(*,*) "Lifetime without boost:",getltimemax/cosh(etamax2)
 	END
 
 
@@ -774,7 +774,6 @@ C--local variables
       INTEGER IX,IY,IB
       DOUBLE PRECISION B,P,PROD,X,Y,NTHICK,NPART,pprev
 
-      
       pprev=0.
       DO 30 IB=1,200
        B=0.1d0*IB

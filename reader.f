@@ -8,7 +8,7 @@ C++   for JEWEL                                                ++
 
 C++   This is the main subroutine that performs the reading    ++
 C++                                                            ++
-      subroutine reader(filename,np,nt,timesteps,tprofile)
+      subroutine reader(filename,np,nt,timesteps,tprofile,ux,uy)
       implicit none
       integer i,j,k
       integer np,nt
@@ -45,6 +45,8 @@ C++                                                            ++
       timesteps(k)=t
       end if
 
+      !write(*,*) 'profiles: ', t, x, y, temp, vx, vy
+
       tprofile(i,j,k)=temp
       ux(i,j,k)=vx
       uy(i,j,k)=vy
@@ -71,7 +73,7 @@ C++                                                            ++
       integer k
       double precision t
       double precision timesteps(60)
-      t=0.d0
+      
       getk=1
       do k=1,60
 
@@ -149,6 +151,8 @@ C++                                                            ++
       !write(*,*) ygrid(3,:)
       !write(*,*) ygrid(4,:)
       f(kk)=bicubic(xa,ya,dx,xmin,xmax,igrid,xgrid,ygrid)
+      !write(*,*) 'f(kk): ', f(kk)
+
       enddo
 
       !write(*,*) "Interpol=",interpol
@@ -221,6 +225,7 @@ C++                                                            ++
 
       derspline=0.d0
       do i=1,4
+      !do i=1,2
       derspline=derspline+c(i)*t**(i-1)
       end do
 
