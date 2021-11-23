@@ -739,7 +739,7 @@ C--local variables
             double precision u,utheta           
 
             !getuy = 0.1
-            getuy = 0.d0
+            getutheta = 0.d0
             tau = sqrt(t**2 - z**2)
             IF ((tau.le.0.6) .OR. (localtemperature.le.0.1)) THEN
               RETURN

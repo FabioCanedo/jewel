@@ -20,6 +20,8 @@ C++                                                            ++
       double precision u(np,np,60)
       double precision theta(np,np,60)
       double precision t,x,y,temp,vx,vy
+      double precision pi
+      DATA PI/3.141592653589793d0/
       integer linecounter
 
       open(unit=1,file=filename,iostat=ios)
