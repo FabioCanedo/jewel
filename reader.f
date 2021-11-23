@@ -234,7 +234,7 @@ C++                                                            ++
       dx=x(2)-x(1)
       do i=1,2
       yvec(i)=y(i)
-      if(norm .and. (y(i)+0.5*abs(yprime(i))).gt.1.d0 ) then
+      if(norm .and. (y(i)+dx*0.5*abs(yprime(i))).gt.1.d0 ) then
         yvec(i+2)=dx*((1.0-y(i))/0.5)*yprime(i)/abs(yprime(i))
       else
         yvec(i+2)=dx*yprime(i)
