@@ -723,7 +723,7 @@ C--local variables
             IF ((tau.le.0.6) .OR. (localtemperature.le.0.1)) THEN
               RETURN
             END IF
-            getu=interpol(tau,x,y,834,timesteps,u)
+            getu=interpol(tau,x,y,834,timesteps,u,.true.)
             !write(*,*) 'NP:', np
             return
       end function
@@ -744,7 +744,7 @@ C--local variables
             IF ((tau.le.0.6) .OR. (localtemperature.le.0.1)) THEN
               RETURN
             END IF
-            getutheta=interpol(tau,x,y,834,timesteps,utheta)
+            getutheta=interpol(tau,x,y,834,timesteps,utheta,.false.)
             return
       end function
 

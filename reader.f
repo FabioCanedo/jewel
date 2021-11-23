@@ -95,10 +95,11 @@ C++                                                            ++
       end function
 
 
-      double precision function interpol(t,x,y,np,timesteps,tgrid)
+      double precision function interpol(t,x,y,np,timesteps,tgrid,norm)
       implicit none
       integer i,j,ii,jj,iii,jjj,np
       integer k,kk
+      logical norm
       double precision timesteps(60)
       double precision tgrid(np,np,60),igrid(4,4),xgrid(4,4),ygrid(4,4)
       double precision xmax,xmin,dx,dt
@@ -160,7 +161,7 @@ C++                                                            ++
       !write(*,*) ygrid(2,:)
       !write(*,*) ygrid(3,:)
       !write(*,*) ygrid(4,:)
-      f(kk)=bicubic(xa,ya,dx,xmin,xmax,igrid,xgrid,ygrid)
+      f(kk)=bicubic(xa,ya,dx,xmin,xmax,igrid,xgrid,ygrid,norm)
       !write(*,*) 'f(kk): ', f(kk)
 
       enddo
@@ -169,9 +170,11 @@ C++                                                            ++
       interpol=f(1)+(t-timesteps(k))*(f(2)-f(1))/dt
       end function
       
-      double precision function bicubic(xa,ya,dx,xmin,xmax,igrid,xc,yc)
+      double precision function 
+     &       bicubic(xa,ya,dx,xmin,xmax,igrid,xc,yc,norm)
       implicit none
       integer i,j
+      logical norm
       double precision y(2,2),y1(2,2),y2(2,2),y12(2,2)
       double precision igrid(4,4)
       double precision xc(4,4),yc(4,4),ansy
@@ -190,12 +193,15 @@ C++                                                            ++
             end do
       end do
       
-      bicubic=dertwospline(xc(2:3,2:3),yc(2:3,2:3),y,y1,y2,y12,xa,ya)
+      bicubic=dertwospline(xc(2:3,2:3),yc(2:3,2:3),y,y1,y2,y12,
+     &xa,ya,norm)
       end function
 
-      double precision function dertwospline(x1,x2,y,y1,y2,y12,xa,xb)
+      double precision function
+     &   dertwospline(x1,x2,y,y1,y2,y12,xa,xb,norm)
       implicit none
       integer i
+      logical norm
       double precision x1(2,2)
       double precision x2(2,2)
       double precision y(2,2)
@@ -206,18 +212,19 @@ C++                                                            ++
       double precision xa,xb
       double precision derspline
 
-      w(1)=derspline(x1(:,1),y(:,1),y1(:,1),xa)
-      w(2)=derspline(x1(:,2),y(:,2),y1(:,1),xa)
-      w1(1)=derspline(x1(:,1),y2(:,1),y12(:,1),xa)
-      w1(2)=derspline(x1(:,2),y2(:,2),y12(:,1),xa)
+      w(1)=derspline(x1(:,1),y(:,1),y1(:,1),xa,norm)
+      w(2)=derspline(x1(:,2),y(:,2),y1(:,1),xa,norm)
+      w1(1)=derspline(x1(:,1),y2(:,1),y12(:,1),xa,norm)
+      w1(2)=derspline(x1(:,2),y2(:,2),y12(:,1),xa,norm)
       
-      dertwospline=derspline(x2(1,:),w(:),w1(:),xb)
+      dertwospline=derspline(x2(1,:),w(:),w1(:),xb,norm)
 
       end function
 
-      double precision function derspline(x,y,yprime,xval)
+      double precision function derspline(x,y,yprime,xval,norm)
       implicit none
       integer i
+      logical norm
       double precision x(2),y(2),yprime(2),c(4),yvec(4)
       double precision dx,xval,t
       double precision a(4,4)
@@ -226,8 +233,12 @@ C++                                                            ++
 
       dx=x(2)-x(1)
       do i=1,2
-            yvec(i)=y(i)
-            yvec(i+2)=dx*yprime(i)
+      yvec(i)=y(i)
+      if(norm .and. (y(i)+0.5*abs(yprime(i))).gt.1.d0 ) then
+        yvec(i+2)=dx*((1.0-y(i))/0.5)*yprime(i)/abs(yprime(i))
+      else
+        yvec(i+2)=dx*yprime(i)
+      endif
       end do
       c=matmul(a,yvec) 
 
