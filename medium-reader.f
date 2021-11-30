@@ -550,6 +550,7 @@ C--local variables
 	px = 0.d0
 	py = 0.d0
 	pz = m*sinh(ys)
+      !TO DO: insert local boost from medium velocity  
 	end
 
 
